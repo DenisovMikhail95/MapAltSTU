@@ -419,9 +419,8 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
         this.maxZoom = maxZoom;
     }
 
-    public void setMinZoom(float minZoom) {
-        this.minZoom = minZoom;
-    }
+    public void setMinZoom(float minZoom) { this.minZoom = minZoom; }
+
 
     public void setCurrentZoom(float zoom, float x, float y) {
         currentMatrix.postScale(zoom / this.currentZoom, zoom / this.currentZoom, x, y);
