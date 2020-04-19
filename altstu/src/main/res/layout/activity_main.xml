@@ -17,7 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="1"
-            style="@style/Widget.AppCompat.Button.Colored" />
+            android:textColor="@color/black"
+            style="@style/Widget.AppCompat.Button.Colored"
+             />
 
         <Button
             android:id="@+id/butFloor2"

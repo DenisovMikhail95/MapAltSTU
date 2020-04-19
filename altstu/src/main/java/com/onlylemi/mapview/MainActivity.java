@@ -1,8 +1,10 @@
 package com.onlylemi.mapview;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.os.Parcelable;
@@ -31,34 +33,45 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        but1 = findViewById(R.id.butFloor1); but1.setOnClickListener(oclBtn);
-        but2 = findViewById(R.id.butFloor2); but2.setOnClickListener(oclBtn);
-        but3 = findViewById(R.id.butFloor3); but3.setOnClickListener(oclBtn);
-        but4 = findViewById(R.id.butFloor4); but4.setOnClickListener(oclBtn);
-        but5 = findViewById(R.id.butFloor5); but5.setOnClickListener(oclBtn);
+        but1 = (Button) findViewById(R.id.butFloor1); but1.setOnClickListener(oclBtn);
+        but2 = (Button) findViewById(R.id.butFloor2); but2.setOnClickListener(oclBtn);
+        but3 = (Button) findViewById(R.id.butFloor3); but3.setOnClickListener(oclBtn);
+        but4 = (Button) findViewById(R.id.butFloor4); but4.setOnClickListener(oclBtn);
+        but5 = (Button) findViewById(R.id.butFloor5); but5.setOnClickListener(oclBtn);
 
         reloadMap();
     }
 
 
     View.OnClickListener oclBtn = new View.OnClickListener() {
+        @SuppressLint("ResourceAsColor")
         @Override
         public void onClick(View v) {
+            but1.setTextColor(Color.WHITE);
+            but2.setTextColor(Color.WHITE);
+            but3.setTextColor(Color.WHITE);
+            but4.setTextColor(Color.WHITE);
+            but5.setTextColor(Color.WHITE);
             switch (v.getId()) {
                 case R.id.butFloor1:
                     image_name = "map1.png";
+                    ((Button) v).setTextColor(Color.BLACK);
                     break;
                 case R.id.butFloor2:
                     image_name = "map2.png";
+                    ((Button) v).setTextColor(Color.BLACK);
                     break;
                 case R.id.butFloor3:
                     image_name = "map3.png";
+                    ((Button) v).setTextColor(Color.BLACK);
                     break;
                 case R.id.butFloor4:
                     image_name = "map4.png";
+                    ((Button) v).setTextColor(Color.BLACK);
                     break;
                 case R.id.butFloor5:
                     image_name = "map5.png";
+                    ((Button) v).setTextColor(Color.BLACK);
                     break;
             }
             reloadMap();
@@ -87,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
         //mapView.setCurrentMatrix(matr);
         //mapView.setCurrentRotateDegrees(rot);
         //mapView.setCurrentZoom(zom);
-       // mapView.setMid(mid);
 
 
     }
