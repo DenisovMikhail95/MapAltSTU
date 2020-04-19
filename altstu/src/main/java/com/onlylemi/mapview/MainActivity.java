@@ -20,6 +20,9 @@ import com.onlylemi.mapview.library.MapView;
 import com.onlylemi.mapview.library.MapViewListener;
 import java.io.IOException;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -84,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         Matrix matr = new Matrix(mapView.getCurrentMatrix());
         float zom = mapView.getCurrentZoom();
         float rot = mapView.getCurrentRotateDegrees();
-        mapView.reset();
+        //mapView.reset();
 
         Bitmap bitmap = null;
         try {
@@ -93,14 +96,11 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         mapView.loadMap(bitmap);
-        mapView.setMinZoom((float) 0.1);
-        mapView.setMaxZoom((float) 2.5);
-        mapView.setScaleAndRotateTogether(true);
 
-        //mapView.setCurrentMatrix(matr);
-        //mapView.setCurrentRotateDegrees(rot);
-        //mapView.setCurrentZoom(zom);
-
+        mapView.setCurrentMatrix(matr);
+        mapView.setCurrentRotateDegrees2(rot);
+        mapView.setCurrentZoom2(zom);
+        mapView.refresh();
 
     }
 

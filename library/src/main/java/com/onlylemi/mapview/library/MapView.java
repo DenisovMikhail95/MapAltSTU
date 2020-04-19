@@ -7,6 +7,7 @@ import android.graphics.Matrix;
 import android.graphics.Picture;
 import android.graphics.PointF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -21,8 +22,6 @@ import java.util.List;
 
 /**
  * MapView
- *
- * @author: onlylemi
  */
 public class MapView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -37,8 +36,8 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
     private boolean isMapLoadFinish = false;
     private List<MapBaseLayer> layers; // all layers
     private MapLayer mapLayer;
-    private float minZoom = 0.5f;
-    private float maxZoom = 3.0f;
+    private float minZoom = 0.1f;
+    private float maxZoom = 2.5f;
     private PointF startTouch = new PointF();
     private PointF lastMove = new PointF();
     private PointF mid = new PointF();
@@ -51,7 +50,7 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
     private int currentTouchState = MapView.TOUCH_STATE_NO; // default touch state
 
     private float oldDist = 0, oldDegree = 0;
-    private boolean isScaleAndRotateTogether = false;
+    private boolean isScaleAndRotateTogether = true;
 
     public MapView(Context context) {
         this(context, null);
@@ -130,6 +129,23 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+    public void refresh2(Matrix curMatrix,float curZoom,float curRotate) {
+        if (holder != null) {
+            Canvas canvas = holder.lockCanvas();
+            if (canvas != null) {
+                canvas.drawColor(-1);
+                if (isMapLoadFinish) {
+                    for (MapBaseLayer layer : layers) {
+                        if (layer.isVisible) {
+                            layer.draw(canvas, curMatrix, curZoom, curRotate);
+                        }
+                    }
+                }
+                holder.unlockCanvasAndPost(canvas);
+            }
+        }
+    }
+
     public void reset () {
         currentMatrix.reset();
         currentZoom = 1.0f;
@@ -140,7 +156,8 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
         return currentMatrix;
     }
     public void setCurrentMatrix(Matrix m){
-        currentMatrix = m;
+        currentMatrix = null;
+        currentMatrix = new Matrix(m);
     }
     public PointF getMid(){
         return mid;
@@ -161,6 +178,7 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
     public void loadMap(final Picture picture) {
         isMapLoadFinish = false;
 
+        /*
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -184,6 +202,25 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
                 }
             }
         }).start();
+
+         */
+        if (picture != null) {
+            if (mapLayer == null) {
+                mapLayer = new MapLayer(MapView.this);
+                // add map image layer
+                layers.add(mapLayer);
+            }
+            mapLayer.setImage(picture);
+            if (mapViewListener != null) {
+                // load map success, and callback
+                mapViewListener.onMapLoadSuccess();
+            }
+            isMapLoadFinish = true;
+        } else {
+            if (mapViewListener != null) {
+                mapViewListener.onMapLoadFail();
+            }
+        }
     }
 
     @Override
@@ -396,7 +433,12 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
     public void setCurrentRotateDegrees(float degrees) {
         mapCenterWithPoint(getMapWidth() / 2, getMapHeight() / 2);
         setCurrentRotateDegrees(degrees, getWidth() / 2, getHeight() / 2);
+
     }
+    public void setCurrentRotateDegrees2(float degrees) {
+        currentRotateDegrees = degrees;
+    }
+
 
     /**
      * set rotate degrees
@@ -419,6 +461,9 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void setCurrentZoom(float zoom) {
         setCurrentZoom(zoom, getWidth() / 2, getHeight() / 2);
+    }
+    public void setCurrentZoom2(float zoom) {
+        currentZoom = zoom;
     }
 
     public boolean isScaleAndRotateTogether() {
