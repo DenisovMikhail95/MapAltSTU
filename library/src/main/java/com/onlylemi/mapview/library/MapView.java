@@ -130,6 +130,25 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+    public void reset () {
+        currentMatrix.reset();
+        currentZoom = 1.0f;
+        currentRotateDegrees = 0.0f;
+    }
+
+    public Matrix getCurrentMatrix(){
+        return currentMatrix;
+    }
+    public void setCurrentMatrix(Matrix m){
+        currentMatrix = m;
+    }
+    public PointF getMid(){
+        return mid;
+    }
+    public void setMid(PointF md){
+        mid = md;
+    }
+
     public void loadMap(Bitmap bitmap) {
         loadMap(MapUtils.getPictureFromBitmap(bitmap));
     }
