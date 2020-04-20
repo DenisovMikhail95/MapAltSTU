@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.PointF;
+import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.onlylemi.mapview.library.MapView;
 import com.onlylemi.mapview.library.MapViewListener;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -35,6 +37,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //подгрузка лого в actionsbar
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        InputStream ims = null;
+        try {
+            ims = getAssets().open("altstu-logo.png");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Drawable d = Drawable.createFromStream(ims, null);
+        getSupportActionBar().setLogo(d);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
 
         but1 = (Button) findViewById(R.id.butFloor1); but1.setOnClickListener(oclBtn);
         but2 = (Button) findViewById(R.id.butFloor2); but2.setOnClickListener(oclBtn);
@@ -58,25 +72,26 @@ public class MainActivity extends AppCompatActivity {
             switch (v.getId()) {
                 case R.id.butFloor1:
                     image_name = "map1.png";
-                    ((Button) v).setTextColor(Color.BLACK);
+                    Toast.makeText(getApplicationContext (), "1 этаж", Toast.LENGTH_LONG).show();
                     break;
                 case R.id.butFloor2:
                     image_name = "map2.png";
-                    ((Button) v).setTextColor(Color.BLACK);
+                    Toast.makeText(getApplicationContext (), "2 этаж", Toast.LENGTH_LONG).show();
                     break;
                 case R.id.butFloor3:
                     image_name = "map3.png";
-                    ((Button) v).setTextColor(Color.BLACK);
+                    Toast.makeText(getApplicationContext (), "3 этаж", Toast.LENGTH_LONG).show();
                     break;
                 case R.id.butFloor4:
                     image_name = "map4.png";
-                    ((Button) v).setTextColor(Color.BLACK);
+                    Toast.makeText(getApplicationContext (), "4 этаж", Toast.LENGTH_LONG).show();
                     break;
                 case R.id.butFloor5:
                     image_name = "map5.png";
-                    ((Button) v).setTextColor(Color.BLACK);
+                    Toast.makeText(getApplicationContext (), "5 этаж", Toast.LENGTH_LONG).show();
                     break;
             }
+            ((Button) v).setTextColor(Color.BLACK);
             reloadMap();
         }
     };
