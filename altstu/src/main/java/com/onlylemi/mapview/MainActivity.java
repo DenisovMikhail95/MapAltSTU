@@ -19,8 +19,12 @@ import android.widget.Button;
 import android.widget.Toast;
 import com.onlylemi.mapview.library.MapView;
 import com.onlylemi.mapview.library.MapViewListener;
+import com.onlylemi.mapview.library.layer.MapBaseLayer;
+import com.onlylemi.mapview.library.layer.MarkLayer;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,9 +33,13 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     private MapView mapView;
+    private MarkLayer markLayer;
     private Button but1,but2,but3,but4,but5;
     private static final String TAG = "MapLayerTestActivity";
     private String image_name = "map1.png";
+
+    List<PointF> marks;
+    List<String> marksName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
         but4 = (Button) findViewById(R.id.butFloor4); but4.setOnClickListener(oclBtn);
         but5 = (Button) findViewById(R.id.butFloor5); but5.setOnClickListener(oclBtn);
 
+        marks = DataFloor1.getMarks();
+        marksName = DataFloor1.getMarksName();
+
         reloadMap();
     }
 
@@ -69,26 +80,38 @@ public class MainActivity extends AppCompatActivity {
             but3.setTextColor(Color.WHITE);
             but4.setTextColor(Color.WHITE);
             but5.setTextColor(Color.WHITE);
+            //нужно очистить старый слой с метками
+            marks = null; marksName = null;
+            List<MapBaseLayer> layers = mapView.getLayers();
+            for (int i = 0; i < layers.size(); i++)
+                if ( layers.get(i) instanceof MarkLayer)
+                    layers.remove(i);
+
             switch (v.getId()) {
                 case R.id.butFloor1:
                     image_name = "map1.png";
                     Toast.makeText(getApplicationContext (), "1 этаж", Toast.LENGTH_LONG).show();
+                    marks = DataFloor1.getMarks(); marksName = DataFloor1.getMarksName();
                     break;
                 case R.id.butFloor2:
                     image_name = "map2.png";
                     Toast.makeText(getApplicationContext (), "2 этаж", Toast.LENGTH_LONG).show();
+                    marks = DataFloor2.getMarks(); marksName = DataFloor2.getMarksName();
                     break;
                 case R.id.butFloor3:
                     image_name = "map3.png";
                     Toast.makeText(getApplicationContext (), "3 этаж", Toast.LENGTH_LONG).show();
+                    marks = DataFloor3.getMarks(); marksName = DataFloor3.getMarksName();
                     break;
                 case R.id.butFloor4:
                     image_name = "map4.png";
                     Toast.makeText(getApplicationContext (), "4 этаж", Toast.LENGTH_LONG).show();
+                    marks = DataFloor4.getMarks(); marksName = DataFloor4.getMarksName();
                     break;
                 case R.id.butFloor5:
                     image_name = "map5.png";
                     Toast.makeText(getApplicationContext (), "5 этаж", Toast.LENGTH_LONG).show();
+                    marks = DataFloor5.getMarks(); marksName = DataFloor5.getMarksName();
                     break;
             }
             ((Button) v).setTextColor(Color.BLACK);
@@ -102,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
         Matrix matr = new Matrix(mapView.getCurrentMatrix());
         float zom = mapView.getCurrentZoom();
         float rot = mapView.getCurrentRotateDegrees();
-        //mapView.reset();
 
         Bitmap bitmap = null;
         try {
@@ -111,6 +133,19 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         mapView.loadMap(bitmap);
+
+        //List<PointF> marks = DataFloor1.getMarks();
+        //final List<String> marksName = DataFloor1.getMarksName();
+        markLayer = null;
+        markLayer = new MarkLayer(mapView, marks, marksName);
+        markLayer.setMarkIsClickListener(new MarkLayer.MarkIsClickListener() {
+            @Override
+            public void markIsClick(int num) {
+                Toast.makeText(getApplicationContext(), "Помещение № " + marksName.get(num)
+                        , Toast.LENGTH_SHORT).show();
+            }
+        });
+        mapView.addLayer(markLayer);
 
         mapView.setCurrentMatrix(matr);
         mapView.setCurrentRotateDegrees2(rot);

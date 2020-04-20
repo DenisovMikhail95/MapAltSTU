@@ -7,8 +7,6 @@ import java.util.List;
 
 /**
  * TestData
- *
- * @author: onlylemi
  */
 public final class TestData {
 

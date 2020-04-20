@@ -204,6 +204,9 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
         }).start();
 
          */
+
+
+
         if (picture != null) {
             if (mapLayer == null) {
                 mapLayer = new MapLayer(MapView.this);
@@ -221,6 +224,8 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
                 mapViewListener.onMapLoadFail();
             }
         }
+
+
     }
 
     @Override
@@ -526,6 +531,7 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
     public float getMapHeight() {
         return mapLayer.getImage().getHeight();
     }
+
 
 
 }

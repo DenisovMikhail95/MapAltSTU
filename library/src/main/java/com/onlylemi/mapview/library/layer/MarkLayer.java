@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.Typeface;
 import android.view.MotionEvent;
 
 import com.onlylemi.mapview.library.MapView;
@@ -47,7 +48,7 @@ public class MarkLayer extends MapBaseLayer {
     }
 
     private void initLayer() {
-        radiusMark = setValue(10f);
+        radiusMark = setValue(15f);
 
         bmpMark = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.mark);
         bmpMarkTouch = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.mark_touch);
@@ -97,8 +98,9 @@ public class MarkLayer extends MapBaseLayer {
 
                     paint.setColor(Color.BLACK);
                     paint.setTextSize(radiusMark);
+                    paint.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL));
                     //mark name
-                    if (mapView.getCurrentZoom() > 1.0 && marksName != null
+                    if (mapView.getCurrentZoom() > 0.5 && marksName != null
                             && marksName.size() == marks.size()) {
                         canvas.drawText(marksName.get(i), goal[0] - radiusMark, goal[1] -
                                 radiusMark / 2, paint);

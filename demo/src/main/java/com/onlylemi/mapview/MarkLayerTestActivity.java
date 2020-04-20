@@ -32,6 +32,8 @@ public class MarkLayerTestActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         mapView.loadMap(bitmap);
+
+        /*
         mapView.setMapViewListener(new MapViewListener() {
             @Override
             public void onMapLoadSuccess() {
@@ -55,5 +57,22 @@ public class MarkLayerTestActivity extends AppCompatActivity {
             }
 
         });
+
+         */
+
+        List<PointF> marks = TestData.getMarks();
+        final List<String> marksName = TestData.getMarksName();
+        markLayer = new MarkLayer(mapView, marks, marksName);
+        markLayer.setMarkIsClickListener(new MarkLayer.MarkIsClickListener() {
+            @Override
+            public void markIsClick(int num) {
+                Toast.makeText(getApplicationContext(), marksName.get(num) + " is " +
+                        "selected", Toast.LENGTH_SHORT).show();
+            }
+        });
+        mapView.addLayer(markLayer);
+        mapView.refresh();
+
+
     }
 }
