@@ -48,7 +48,7 @@ public class MarkLayer extends MapBaseLayer {
     }
 
     private void initLayer() {
-        radiusMark = setValue(15f);
+        radiusMark = setValue(10f);
 
         bmpMark = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.mark);
         bmpMarkTouch = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.mark_touch);

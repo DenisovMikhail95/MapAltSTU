@@ -124,14 +124,63 @@ public final class DataFloor1 {
         marks.add(new PointF(2525, 865));
         marks.add(new PointF(2585, 1030));
 
-
-
-
-
-
-
-
         return marks;
+    }
+
+    public static List<PointF> getNodesList() {
+        List<PointF> nodes = new ArrayList<>();
+        nodes.add(new PointF(437, 1028));//0
+        nodes.add(new PointF(380, 1028));//1
+        nodes.add(new PointF(380, 2150));//2
+        nodes.add(new PointF(1935, 2166));//3
+        nodes.add(new PointF(1941, 1772));//4
+        nodes.add(new PointF(3095, 1751));//5
+        nodes.add(new PointF(3384, 1758));//6
+        nodes.add(new PointF(3347, 1612));//7
+        nodes.add(new PointF(3377, 1550));//8
+        nodes.add(new PointF(3653, 1552));//9
+        nodes.add(new PointF(3974, 1534));//10
+        nodes.add(new PointF(4000, 1608));//11
+        nodes.add(new PointF(3988, 1719));//12
+        nodes.add(new PointF(4055, 1778));//13
+        nodes.add(new PointF(3804, 2009));//14
+        nodes.add(new PointF(3656, 1961));//15
+        nodes.add(new PointF(3519, 2016));//16
+        nodes.add(new PointF(3391, 1903));//17
+        nodes.add(new PointF(5391, 1778));//18
+        nodes.add(new PointF(5397, 2176));//19
+        nodes.add(new PointF(6947, 2149));//20
+        nodes.add(new PointF(6947, 1692));//21
+
+        return nodes;
+    }
+
+    public static List<PointF> getNodesContactList() {
+        List<PointF> nodesContact = new ArrayList<PointF>();
+        nodesContact.add(new PointF(0, 1));
+        nodesContact.add(new PointF(1, 2));
+        nodesContact.add(new PointF(2, 3));
+        nodesContact.add(new PointF(3, 4));
+        nodesContact.add(new PointF(4, 5));
+        nodesContact.add(new PointF(5, 6));
+        nodesContact.add(new PointF(6, 7));
+        nodesContact.add(new PointF(7, 8));
+        nodesContact.add(new PointF(8, 9));
+        nodesContact.add(new PointF(9, 10));
+        nodesContact.add(new PointF(10, 11));
+        nodesContact.add(new PointF(11, 12));
+        nodesContact.add(new PointF(12, 13));
+        nodesContact.add(new PointF(13, 14));
+        nodesContact.add(new PointF(14, 15));
+        nodesContact.add(new PointF(15, 16));
+        nodesContact.add(new PointF(16, 17));
+        nodesContact.add(new PointF(17, 6));
+        nodesContact.add(new PointF(6, 13));
+        nodesContact.add(new PointF(13, 18));
+        nodesContact.add(new PointF(18, 19));
+        nodesContact.add(new PointF(19, 20));
+        nodesContact.add(new PointF(20, 21));
+        return nodesContact;
     }
 
     public static List<String> getMarksName() {

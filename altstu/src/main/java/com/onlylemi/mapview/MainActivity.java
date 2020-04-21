@@ -21,6 +21,8 @@ import com.onlylemi.mapview.library.MapView;
 import com.onlylemi.mapview.library.MapViewListener;
 import com.onlylemi.mapview.library.layer.MapBaseLayer;
 import com.onlylemi.mapview.library.layer.MarkLayer;
+import com.onlylemi.mapview.library.layer.RouteLayer;
+import com.onlylemi.mapview.library.utils.MapUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,12 +36,15 @@ public class MainActivity extends AppCompatActivity {
 
     private MapView mapView;
     private MarkLayer markLayer;
+    private RouteLayer routeLayer;
     private Button but1,but2,but3,but4,but5;
     private static final String TAG = "MapLayerTestActivity";
     private String image_name = "map1.png";
 
     List<PointF> marks;
     List<String> marksName;
+    private List<PointF> nodes;
+    private List<PointF> nodesContract;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +71,10 @@ public class MainActivity extends AppCompatActivity {
 
         marks = DataFloor1.getMarks();
         marksName = DataFloor1.getMarksName();
+        //*********************
+        nodes = DataFloor1.getNodesList();
+        nodesContract = DataFloor1.getNodesContactList();
+        //*********************
 
         reloadMap();
     }
@@ -134,18 +143,30 @@ public class MainActivity extends AppCompatActivity {
         }
         mapView.loadMap(bitmap);
 
-        //List<PointF> marks = DataFloor1.getMarks();
-        //final List<String> marksName = DataFloor1.getMarksName();
+        //*********************
+        MapUtils.init(nodes.size(), nodesContract.size());
+        routeLayer = null;
+        routeLayer = new RouteLayer(mapView);
+        mapView.addLayer(routeLayer);
+        //*********************
         markLayer = null;
         markLayer = new MarkLayer(mapView, marks, marksName);
+        mapView.addLayer(markLayer);
         markLayer.setMarkIsClickListener(new MarkLayer.MarkIsClickListener() {
             @Override
             public void markIsClick(int num) {
                 Toast.makeText(getApplicationContext(), "Помещение № " + marksName.get(num)
                         , Toast.LENGTH_SHORT).show();
+                //*********************
+                PointF target = new PointF(marks.get(num).x, marks.get(num).y);
+                List<Integer> routeList = MapUtils.getShortestDistanceBetweenTwoPoints
+                        (marks.get(37), target, nodes, nodesContract);
+                routeLayer.setNodeList(nodes);
+                routeLayer.setRouteList(routeList);
+                mapView.refresh();
+                //*********************
             }
         });
-        mapView.addLayer(markLayer);
 
         mapView.setCurrentMatrix(matr);
         mapView.setCurrentRotateDegrees2(rot);
