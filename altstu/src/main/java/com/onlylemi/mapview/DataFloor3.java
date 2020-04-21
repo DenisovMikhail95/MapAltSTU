@@ -22,4 +22,14 @@ public final class DataFloor3 {
         }
         return marksName;
     }
+
+    public static List<PointF> getNodesList() {
+        List<PointF> nodes = new ArrayList<>();
+        return nodes;
+    }
+
+    public static List<PointF> getNodesContactList() {
+        List<PointF> nodesContact = new ArrayList<PointF>();
+        return nodesContact;
+    }
 }

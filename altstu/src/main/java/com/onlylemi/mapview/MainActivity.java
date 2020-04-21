@@ -71,10 +71,8 @@ public class MainActivity extends AppCompatActivity {
 
         marks = DataFloor1.getMarks();
         marksName = DataFloor1.getMarksName();
-        //*********************
         nodes = DataFloor1.getNodesList();
         nodesContract = DataFloor1.getNodesContactList();
-        //*********************
 
         reloadMap();
     }
@@ -89,38 +87,54 @@ public class MainActivity extends AppCompatActivity {
             but3.setTextColor(Color.WHITE);
             but4.setTextColor(Color.WHITE);
             but5.setTextColor(Color.WHITE);
-            //нужно очистить старый слой с метками
+            //нужно очистить старый слой с метками и маршрутами
             marks = null; marksName = null;
+            nodes = null; nodesContract = null;
             List<MapBaseLayer> layers = mapView.getLayers();
+            /*
             for (int i = 0; i < layers.size(); i++)
-                if ( layers.get(i) instanceof MarkLayer)
-                    layers.remove(i);
+                if ( layers.get(i) instanceof MarkLayer) {
+                    layers.remove(i); break;
+                }
+            for (int i = 0; i < layers.size(); i++)
+                if ( layers.get(i) instanceof RouteLayer) {
+                    layers.remove(i); break;
+                }
+             */
+            layers.remove(layers.size() -1);
+            layers.remove(layers.size() -1);
+
 
             switch (v.getId()) {
                 case R.id.butFloor1:
                     image_name = "map1.png";
                     Toast.makeText(getApplicationContext (), "1 этаж", Toast.LENGTH_LONG).show();
                     marks = DataFloor1.getMarks(); marksName = DataFloor1.getMarksName();
+                    nodes = DataFloor1.getNodesList(); nodesContract = DataFloor1.getNodesContactList();
                     break;
                 case R.id.butFloor2:
                     image_name = "map2.png";
                     Toast.makeText(getApplicationContext (), "2 этаж", Toast.LENGTH_LONG).show();
                     marks = DataFloor2.getMarks(); marksName = DataFloor2.getMarksName();
+                    nodes = DataFloor1.getNodesList(); nodesContract = DataFloor1.getNodesContactList();
                     break;
                 case R.id.butFloor3:
                     image_name = "map3.png";
                     Toast.makeText(getApplicationContext (), "3 этаж", Toast.LENGTH_LONG).show();
                     marks = DataFloor3.getMarks(); marksName = DataFloor3.getMarksName();
+                    nodes = DataFloor1.getNodesList(); nodesContract = DataFloor1.getNodesContactList();
                     break;
                 case R.id.butFloor4:
                     image_name = "map4.png";
                     Toast.makeText(getApplicationContext (), "4 этаж", Toast.LENGTH_LONG).show();
                     marks = DataFloor4.getMarks(); marksName = DataFloor4.getMarksName();
+                    nodes = DataFloor1.getNodesList(); nodesContract = DataFloor1.getNodesContactList();
                     break;
                 case R.id.butFloor5:
                     image_name = "map5.png";
                     Toast.makeText(getApplicationContext (), "5 этаж", Toast.LENGTH_LONG).show();
                     marks = DataFloor5.getMarks(); marksName = DataFloor5.getMarksName();
+                    nodes = DataFloor1.getNodesList(); nodesContract = DataFloor1.getNodesContactList();
                     break;
             }
             ((Button) v).setTextColor(Color.BLACK);
@@ -143,12 +157,10 @@ public class MainActivity extends AppCompatActivity {
         }
         mapView.loadMap(bitmap);
 
-        //*********************
         MapUtils.init(nodes.size(), nodesContract.size());
         routeLayer = null;
         routeLayer = new RouteLayer(mapView);
         mapView.addLayer(routeLayer);
-        //*********************
         markLayer = null;
         markLayer = new MarkLayer(mapView, marks, marksName);
         mapView.addLayer(markLayer);
@@ -157,14 +169,12 @@ public class MainActivity extends AppCompatActivity {
             public void markIsClick(int num) {
                 Toast.makeText(getApplicationContext(), "Помещение № " + marksName.get(num)
                         , Toast.LENGTH_SHORT).show();
-                //*********************
                 PointF target = new PointF(marks.get(num).x, marks.get(num).y);
                 List<Integer> routeList = MapUtils.getShortestDistanceBetweenTwoPoints
                         (marks.get(37), target, nodes, nodesContract);
                 routeLayer.setNodeList(nodes);
                 routeLayer.setRouteList(routeList);
                 mapView.refresh();
-                //*********************
             }
         });
 
