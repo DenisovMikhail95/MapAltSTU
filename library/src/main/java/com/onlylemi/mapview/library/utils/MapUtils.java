@@ -279,6 +279,19 @@ public final class MapUtils {
         return getShortestPathBetweenTwoPoints(nodes.size() - 1, target, nodes, nodesContact);
     }
 
+    public void resetRoute(List<PointF> nodes, List<PointF> nodesContact){
+        if (nodesSize != nodes.size()) {
+            int value = nodes.size() - nodesSize;
+            for (int i = 0; i < value; i++) {
+                nodes.remove(nodes.size() - 1);
+            }
+            value = nodesContact.size() - nodesContactSize;
+            for (int i = 0; i < value; i++) {
+                nodesContact.remove(nodesContact.size() - 1);
+            }
+        }
+    }
+
     /**
      * add point to list
      *

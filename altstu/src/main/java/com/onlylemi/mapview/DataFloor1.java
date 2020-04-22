@@ -9,9 +9,7 @@ public final class DataFloor1 {
 
     private DataFloor1() {}
 
-
-
-
+    //координаты меток помещений
     public static List<PointF> getMarks() {
         List<PointF> marks = new ArrayList<>();
         //помещения
@@ -81,15 +79,12 @@ public final class DataFloor1 {
         marks.add(new PointF(6755, 1480));
         marks.add(new PointF(7090, 1370));
         marks.add(new PointF(6760, 1145));
-
         //лестницы
         marks.add(new PointF(588, 1025));
         marks.add(new PointF(1712, 2000));
         marks.add(new PointF(3357, 1465));
         marks.add(new PointF(3984, 1448));
         marks.add(new PointF(5628, 2007));
-        //marks.add(new PointF(6778, 1019));
-
         //оставщиеся неиспользующиеся помещения
         /*
         marks.add(new PointF(3910, 1435));
@@ -133,11 +128,12 @@ public final class DataFloor1 {
         marks.add(new PointF(1990, 1615));
         marks.add(new PointF(7140, 1000));
         marks.add(new PointF(6955, 1020));
+        marks.add(new PointF(6778, 1019));
          */
-
         return marks;
     }
 
+    //имена помещений
     public static List<String> getMarksName() {
         List<String> marksName = new ArrayList<>();
         for (int i = 0; i < getMarks().size() - 5; i++) {
@@ -153,6 +149,7 @@ public final class DataFloor1 {
 
     }
 
+    //список узлов маршрута
     public static List<PointF> getNodesList() {
         List<PointF> nodes = new ArrayList<>();
         nodes.add(new PointF(141,1031 ));//0
@@ -272,12 +269,10 @@ public final class DataFloor1 {
         nodes.add(new PointF(7109, 1207));//113
         nodes.add(new PointF(6734, 1166));//114
 
-
-
-
         return nodes;
     }
 
+    //список смежности узлов маршрута
     public static List<PointF> getNodesContactList() {
         List<PointF> nodesContact = new ArrayList<PointF>();
         nodesContact.add(new PointF(0, 1));
@@ -372,10 +367,8 @@ public final class DataFloor1 {
         nodesContact.add(new PointF(88, 90));
         nodesContact.add(new PointF(90, 91));
         nodesContact.add(new PointF(90, 92));
-        //nodesContact.add(new PointF(92, 93));
         nodesContact.add(new PointF(92, 94));
         nodesContact.add(new PointF(92, 95));
-        //nodesContact.add(new PointF(95, 96));
         nodesContact.add(new PointF(95, 97));
         nodesContact.add(new PointF(97, 98));
         nodesContact.add(new PointF(97, 100));
@@ -394,9 +387,7 @@ public final class DataFloor1 {
         nodesContact.add(new PointF(112, 113));
         nodesContact.add(new PointF(113, 114));
 
-
         return nodesContact;
     }
-
 
 }
