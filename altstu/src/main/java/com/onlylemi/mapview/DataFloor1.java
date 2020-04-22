@@ -88,6 +88,7 @@ public final class DataFloor1 {
         marks.add(new PointF(3357, 1465));
         marks.add(new PointF(3984, 1448));
         marks.add(new PointF(5628, 2007));
+        //marks.add(new PointF(6778, 1019));
 
         //оставщиеся неиспользующиеся помещения
         /*
@@ -139,7 +140,7 @@ public final class DataFloor1 {
 
     public static List<String> getMarksName() {
         List<String> marksName = new ArrayList<>();
-        for (int i = 0; i < getMarks().size() - 6; i++) {
+        for (int i = 0; i < getMarks().size() - 5; i++) {
             marksName.add(Integer.toString(i + 1));
         }
         marksName.add("Лестница #1");
@@ -147,7 +148,6 @@ public final class DataFloor1 {
         marksName.add("Лестница #3");
         marksName.add("Лестница #4");
         marksName.add("Лестница #5");
-
 
         return marksName;
 
@@ -372,7 +372,7 @@ public final class DataFloor1 {
         nodesContact.add(new PointF(88, 90));
         nodesContact.add(new PointF(90, 91));
         nodesContact.add(new PointF(90, 92));
-       // nodesContact.add(new PointF(92, 93));
+        //nodesContact.add(new PointF(92, 93));
         nodesContact.add(new PointF(92, 94));
         nodesContact.add(new PointF(92, 95));
         //nodesContact.add(new PointF(95, 96));
