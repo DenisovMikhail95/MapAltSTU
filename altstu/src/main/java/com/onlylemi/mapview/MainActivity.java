@@ -87,24 +87,12 @@ public class MainActivity extends AppCompatActivity {
             but3.setTextColor(Color.WHITE);
             but4.setTextColor(Color.WHITE);
             but5.setTextColor(Color.WHITE);
-            //нужно очистить старый слой с метками и маршрутами
+            //нужно очистить старый слои с метками и маршрутами
             marks = null; marksName = null;
             nodes = null; nodesContract = null;
             List<MapBaseLayer> layers = mapView.getLayers();
-            /*
-            for (int i = 0; i < layers.size(); i++)
-                if ( layers.get(i) instanceof MarkLayer) {
-                    layers.remove(i); break;
-                }
-            for (int i = 0; i < layers.size(); i++)
-                if ( layers.get(i) instanceof RouteLayer) {
-                    layers.remove(i); break;
-                }
-             */
             layers.remove(layers.size() -1);
             layers.remove(layers.size() -1);
-
-
             switch (v.getId()) {
                 case R.id.butFloor1:
                     image_name = "map1.png";
@@ -167,11 +155,13 @@ public class MainActivity extends AppCompatActivity {
         markLayer.setMarkIsClickListener(new MarkLayer.MarkIsClickListener() {
             @Override
             public void markIsClick(int num) {
+                /*
                 Toast.makeText(getApplicationContext(), "Помещение № " + marksName.get(num)
                         , Toast.LENGTH_SHORT).show();
+                 */
                 PointF target = new PointF(marks.get(num).x, marks.get(num).y);
                 List<Integer> routeList = MapUtils.getShortestDistanceBetweenTwoPoints
-                        (marks.get(37), target, nodes, nodesContract);
+                        (marks.get(36), target, nodes, nodesContract);
                 routeLayer.setNodeList(nodes);
                 routeLayer.setRouteList(routeList);
                 mapView.refresh();

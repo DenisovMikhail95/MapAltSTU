@@ -95,8 +95,7 @@ public class MarkLayer extends MapBaseLayer {
                     PointF mark = marks.get(i);
                     float[] goal = {mark.x, mark.y};
                     currentMatrix.mapPoints(goal);
-
-                    paint.setColor(Color.BLACK);
+                    paint.setColor(Color.YELLOW);
                     paint.setTextSize(radiusMark);
                     paint.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL));
                     //mark name
