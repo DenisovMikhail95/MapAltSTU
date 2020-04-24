@@ -1,34 +1,27 @@
 package com.onlylemi.mapview;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
-import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import com.onlylemi.mapview.library.MapView;
-import com.onlylemi.mapview.library.MapViewListener;
 import com.onlylemi.mapview.library.layer.MapBaseLayer;
 import com.onlylemi.mapview.library.layer.MarkLayer;
 import com.onlylemi.mapview.library.layer.RouteLayer;
@@ -38,15 +31,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 
-
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private MapView mapView; //слой карты (изображения)
     private MarkLayer markLayer; //слой меток
@@ -328,6 +315,73 @@ public class MainActivity extends AppCompatActivity {
         routeLayer.setNodeList(nodes);
         routeLayer.setRouteList(routeList);
         flag_route = true;
+        mapView.mapCenterWithPoint(marks.get(indFrom).x, marks.get(indFrom).y);
         mapView.refresh();
+    }
+
+
+    //создание строки поиска
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(this);
+        return true;
+    }
+    //событие нажатия на кнопку поиска
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+
+        int indexRoom = -1, indexFloor = -1;
+        List< List<String>> datafloors = new ArrayList<List<String>>();
+        datafloors.add(DataFloor1.getMarksName());
+        datafloors.add(DataFloor2.getMarksName());
+        datafloors.add(DataFloor3.getMarksName());
+        datafloors.add(DataFloor4.getMarksName());
+        datafloors.add(DataFloor5.getMarksName());
+        for(int i = 0 ; i <  datafloors.size(); i++){
+            for(int j = 0; j < datafloors.get(i).size() - 1; j++) {
+                if (datafloors.get(i).get(j).equals(query.toString())){
+                    indexRoom = j; indexFloor = i + 1;
+                }
+            }
+            if(indexRoom != -1)
+                break;
+        }
+        if(indexRoom == -1) {
+            Toast.makeText(getApplicationContext(), "Поиск не дал результатов", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        switch (indexFloor){
+            case 1:
+                but1.performClick();
+                break;
+            case 2:
+                but2.performClick();
+                break;
+            case 3:
+                but3.performClick();
+                break;
+            case 4:
+                but4.performClick();
+                break;
+            case 5:
+                but5.performClick();
+                break;
+        }
+
+        mapView.mapCenterWithPoint(marks.get(indexRoom).x, marks.get(indexRoom).y);
+
+        markLayer.setNum(indexRoom);
+        markLayer.setClickMark(true);
+        mapView.refresh();
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        // User changed the text
+        return false;
     }
 }

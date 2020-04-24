@@ -148,7 +148,7 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
 
     public void reset () {
         currentMatrix.reset();
-        currentZoom = 1.0f;
+        currentZoom = 0.1f;
         currentRotateDegrees = 0.0f;
     }
 
