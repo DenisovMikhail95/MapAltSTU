@@ -145,25 +145,25 @@ public class MainActivity extends AppCompatActivity {
                     image_name = "map2.png";
                     Toast.makeText(getApplicationContext (), "2 этаж", Toast.LENGTH_LONG).show();
                     marks = DataFloor2.getMarks(); marksName = DataFloor2.getMarksName();
-                    nodes = DataFloor1.getNodesList(); nodesContact = DataFloor1.getNodesContactList();
+                    nodes = DataFloor2.getNodesList(); nodesContact = DataFloor2.getNodesContactList();
                     break;
                 case R.id.butFloor3:
                     image_name = "map3.png";
                     Toast.makeText(getApplicationContext (), "3 этаж", Toast.LENGTH_LONG).show();
                     marks = DataFloor3.getMarks(); marksName = DataFloor3.getMarksName();
-                    nodes = DataFloor1.getNodesList(); nodesContact = DataFloor1.getNodesContactList();
+                    nodes = DataFloor3.getNodesList(); nodesContact = DataFloor3.getNodesContactList();
                     break;
                 case R.id.butFloor4:
                     image_name = "map4.png";
                     Toast.makeText(getApplicationContext (), "4 этаж", Toast.LENGTH_LONG).show();
                     marks = DataFloor4.getMarks(); marksName = DataFloor4.getMarksName();
-                    nodes = DataFloor1.getNodesList(); nodesContact = DataFloor1.getNodesContactList();
+                    nodes = DataFloor4.getNodesList(); nodesContact = DataFloor4.getNodesContactList();
                     break;
                 case R.id.butFloor5:
                     image_name = "map5.png";
                     Toast.makeText(getApplicationContext (), "5 этаж", Toast.LENGTH_LONG).show();
                     marks = DataFloor5.getMarks(); marksName = DataFloor5.getMarksName();
-                    nodes = DataFloor1.getNodesList(); nodesContact = DataFloor1.getNodesContactList();
+                    nodes = DataFloor5.getNodesList(); nodesContact = DataFloor5.getNodesContactList();
                     break;
             }
             //меняем цвет нажатой кнопки
