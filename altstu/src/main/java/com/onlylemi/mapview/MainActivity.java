@@ -61,6 +61,11 @@ public class MainActivity extends AppCompatActivity {
     private List<PointF> nodesContact; //список смежности узлов
 
     String roomFrom, roomTo; //начало, конец маршрута (имя помещения)
+    int indexFrom, indexTo; //индексы помещений
+    int floorFrom, floorTo, cur_floor = 1; //стартовый этаж, конечный, текущий
+    int indexStairs; //индекс лестницы в случае перехода между этажами.
+    private  boolean flag_route = false; // построен ли маршрут в данный момент
+    List<Integer> routeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,8 +110,9 @@ public class MainActivity extends AppCompatActivity {
                     loadRouteDialog(); //вызываем диалог для ввода начала и конца маршрута
                     break;
                 case R.id.butRes:
-                    List<Integer> routeList = new ArrayList<>();
+                    routeList = new ArrayList<>();
                     routeLayer.setRouteList(routeList);
+                    flag_route = false;
                     mapView.refresh();
                     break;
             }
@@ -131,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
             layers.remove(layers.size() -1);
             layers.remove(layers.size() -1);
 
+            cur_floor = 0;
             switch (v.getId()) {
                 case R.id.butFloor1:
                     //указываем имя изображения которое нужно будет загрузить
@@ -140,36 +147,46 @@ public class MainActivity extends AppCompatActivity {
                     //подгружаем метки и узлы соответствующего этажа
                     marks = DataFloor1.getMarks(); marksName = DataFloor1.getMarksName();
                     nodes = DataFloor1.getNodesList(); nodesContact = DataFloor1.getNodesContactList();
+                    cur_floor = 1;
                     break;
                 case R.id.butFloor2:
                     image_name = "map2.png";
                     Toast.makeText(getApplicationContext (), "2 этаж", Toast.LENGTH_LONG).show();
                     marks = DataFloor2.getMarks(); marksName = DataFloor2.getMarksName();
                     nodes = DataFloor2.getNodesList(); nodesContact = DataFloor2.getNodesContactList();
+                    cur_floor = 2;
                     break;
                 case R.id.butFloor3:
                     image_name = "map3.png";
                     Toast.makeText(getApplicationContext (), "3 этаж", Toast.LENGTH_LONG).show();
                     marks = DataFloor3.getMarks(); marksName = DataFloor3.getMarksName();
                     nodes = DataFloor3.getNodesList(); nodesContact = DataFloor3.getNodesContactList();
+                    cur_floor = 3;
                     break;
                 case R.id.butFloor4:
                     image_name = "map4.png";
                     Toast.makeText(getApplicationContext (), "4 этаж", Toast.LENGTH_LONG).show();
                     marks = DataFloor4.getMarks(); marksName = DataFloor4.getMarksName();
                     nodes = DataFloor4.getNodesList(); nodesContact = DataFloor4.getNodesContactList();
+                    cur_floor = 4;
                     break;
                 case R.id.butFloor5:
                     image_name = "map5.png";
                     Toast.makeText(getApplicationContext (), "5 этаж", Toast.LENGTH_LONG).show();
                     marks = DataFloor5.getMarks(); marksName = DataFloor5.getMarksName();
                     nodes = DataFloor5.getNodesList(); nodesContact = DataFloor5.getNodesContactList();
+                    cur_floor = 5;
                     break;
             }
             //меняем цвет нажатой кнопки
             ((Button) v).setTextColor(Color.BLACK);
             //перерисовываем карту
             reloadMap();
+            //если был построенный маршрут, отрисовываем
+            if(flag_route  && (cur_floor == floorTo || cur_floor == floorFrom)){
+                buildRoute(indexFrom, indexTo);
+            }
+
         }
     };
 
@@ -237,29 +254,54 @@ public class MainActivity extends AppCompatActivity {
                                 roomFrom = userInputFrom.getText().toString();
                                 roomTo = userInputTo.getText().toString();
                                 if(!(roomFrom.length() == 0 || roomTo.length() == 0) ) {
-                                    //поиск индексов помещений
-                                    int indTo = -1, indFrom = -1;
-                                    for(int i = 0; i < marksName.size() - 1; i++) {
-                                        if (marksName.get(i).equals(roomFrom))
-                                            indFrom = i;
-                                        if (marksName.get(i).equals(roomTo))
-                                            indTo = i;
+                                    //поиск индексов помещений по этажам
+                                    indexTo = -1; indexFrom = -1;
+                                    List< List<String>> datafloors = new ArrayList<List<String>>();
+                                    datafloors.add(DataFloor1.getMarksName());
+                                    datafloors.add(DataFloor2.getMarksName());
+                                    datafloors.add(DataFloor3.getMarksName());
+                                    datafloors.add(DataFloor4.getMarksName());
+                                    datafloors.add(DataFloor5.getMarksName());
+                                    for(int i = 0 ; i <  datafloors.size(); i++){
+                                        for(int j = 0; j < datafloors.get(i).size() - 1; j++) {
+                                            if (datafloors.get(i).get(j).equals(roomFrom)){
+                                                indexFrom = j; floorFrom = i + 1;
+                                            }
+                                            if (datafloors.get(i).get(j).equals(roomTo)) {
+                                                indexTo = j; floorTo = i + 1;
+                                            }
+                                        }
+                                        if(indexFrom != -1 && indexTo != -1)
+                                            break;
                                     }
-                                    if(indFrom == -1) {
+
+                                    if(indexFrom == -1) {
                                         Toast.makeText(getApplicationContext(), "Помещение " + roomFrom + " не найдено.", Toast.LENGTH_LONG).show();
                                         return;
                                     }
-                                    if(indTo == -1) {
+                                    if(indexTo == -1) {
                                         Toast.makeText(getApplicationContext(), "Помещение " + roomTo + " не найдено.", Toast.LENGTH_LONG).show();
                                         return;
                                     }
-
-                                    //используем функцию поиска кратчайшего пути между помещениями
-                                    List<Integer> routeList = MapUtils.getShortestDistanceBetweenTwoPoints
-                                            (marks.get(indFrom), marks.get(indTo), nodes, nodesContact);
-                                    routeLayer.setNodeList(nodes);
-                                    routeLayer.setRouteList(routeList);
-                                    mapView.refresh();
+                                    flag_route = true;
+                                    //переключаем на стартовый этаж программным нажатием кнопки. там и отрисуется маршрут
+                                    switch (floorFrom){
+                                        case 1:
+                                            but1.performClick();
+                                            break;
+                                        case 2:
+                                            but2.performClick();
+                                            break;
+                                        case 3:
+                                            but3.performClick();
+                                            break;
+                                        case 4:
+                                            but4.performClick();
+                                            break;
+                                        case 5:
+                                            but5.performClick();
+                                            break;
+                                    }
                                 }
                                 else{
                                     Toast.makeText(getApplicationContext (), "Заполните оба поля!", Toast.LENGTH_LONG).show();
@@ -277,5 +319,15 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog alertDialog = mDialogBuilder.create();
         //и отображаем его:
         alertDialog.show();
+    }
+
+    protected  void buildRoute(int indFrom, int indTo){
+        //используем функцию поиска кратчайшего пути между помещениями
+        routeList = MapUtils.getShortestDistanceBetweenTwoPoints
+                (marks.get(indFrom), marks.get(indTo), nodes, nodesContact);
+        routeLayer.setNodeList(nodes);
+        routeLayer.setRouteList(routeList);
+        flag_route = true;
+        mapView.refresh();
     }
 }

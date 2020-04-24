@@ -103,27 +103,23 @@ public final class DataFloor2 {
         marks.add(new PointF(7164, 1035));//88
 
         //лестницы
-        marks.add(new PointF(591, 1043));
         marks.add(new PointF(1714, 2014));//88
         marks.add(new PointF(3391, 1401));//88
         marks.add(new PointF(3958, 1398));//88
         marks.add(new PointF(5670, 2009));//88
-        marks.add(new PointF(6783, 1037));//88
 
         return marks;
     }
 
     public static List<String> getMarksName() {
         List<String> marksName = new ArrayList<>();
-        for (int i = 0; i < getMarks().size() - 6; i++) {
+        for (int i = 0; i < getMarks().size() - 4; i++) {
             marksName.add(Integer.toString(i + 200));
         }
         marksName.add("Лестница #1");
         marksName.add("Лестница #2");
         marksName.add("Лестница #3");
         marksName.add("Лестница #4");
-        marksName.add("Лестница #5");
-        marksName.add("Лестница #6");
 
         return marksName;
     }
