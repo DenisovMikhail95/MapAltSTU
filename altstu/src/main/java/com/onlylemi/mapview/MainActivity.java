@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private List<PointF> nodes; //список узлов перемещения
     private List<PointF> nodesContact; //список смежности узлов
 
-    String roomFrom, roomTo; //начало, конец маршрута (имя помещения)
+    String roomFrom = "", roomTo = ""; //начало, конец маршрута (имя помещения)
     int indexFrom, indexTo; //индексы помещений
     int floorFrom, floorTo, cur_floor = 1; //стартовый этаж, конечный, текущий
     int stairs; //лестница в случае перехода между этажами.
@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     routeLayer.setRouteList(routeList);
                     flag_route = false;
                     mapView.refresh();
+                    roomFrom = ""; roomTo = "";
                     break;
             }
         }
@@ -239,6 +240,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         //Настраиваем отображение поля для ввода текста в открытом диалоге:
         final EditText userInputFrom = (EditText) promptsView.findViewById(R.id.inputFrom);
         final EditText userInputTo = (EditText) promptsView.findViewById(R.id.inputTo);
+        if(flag_route) {
+            userInputFrom.setText(roomFrom);
+            userInputTo.setText(roomTo);
+        }
+
         mDialogBuilder
                 .setTitle("Проложить маршрут")
                 .setCancelable(false)
@@ -283,13 +289,13 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
                                     //если переход между этажами, определяем лестницу
                                     if(floorFrom != floorTo){
-                                        if(marks.get(indexTo).x < 2500)
+                                        if(marks.get(indexFrom).x < 2500)
                                             stairs = 1;
-                                        else if (marks.get(indexTo).x >= 2500 && marks.get(indexTo).x < 3700)
+                                        else if (marks.get(indexFrom).x >= 2500 && marks.get(indexFrom).x < 3700)
                                             stairs = 2;
-                                        else if (marks.get(indexTo).x >= 3700 && marks.get(indexTo).x < 4900)
+                                        else if (marks.get(indexFrom).x >= 3700 && marks.get(indexFrom).x < 4900)
                                             stairs = 3;
-                                        else if (marks.get(indexTo).x >= 4900)
+                                        else if (marks.get(indexFrom).x >= 4900)
                                             stairs = 4;
                                     }
 
@@ -340,7 +346,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mapView.mapCenterWithPoint(marks.get(indFrom).x, marks.get(indFrom).y);
         mapView.refresh();
     }
-
 
     //создание меню в actionbar, содержащее только строку поиска
     @Override
