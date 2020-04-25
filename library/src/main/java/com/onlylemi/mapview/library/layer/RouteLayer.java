@@ -28,6 +28,8 @@ public class RouteLayer extends MapBaseLayer {
 
     private Bitmap routeStartBmp;
     private Bitmap routeEndBmp;
+    private  Bitmap startStairsBmp;
+    private  Bitmap endStairsBmp;
 
     private Paint paint;
 
@@ -55,6 +57,12 @@ public class RouteLayer extends MapBaseLayer {
                 R.mipmap.start_point);
         routeEndBmp = BitmapFactory.decodeResource(mapView.getResources(),
                 R.mipmap.end_point);
+
+        startStairsBmp = BitmapFactory.decodeResource(mapView.getResources(),
+                R.mipmap.start_stairs);
+        endStairsBmp = BitmapFactory.decodeResource(mapView.getResources(),
+                R.mipmap.end_stairs);
+
     }
 
     @Override
@@ -95,14 +103,39 @@ public class RouteLayer extends MapBaseLayer {
                 float[]  goal2 = {
                         nodeList.get(routeList.get(routeList.size() - 1)).x,
                         nodeList.get(routeList.get(routeList.size() - 1)).y};
+
+                float[] start = {goal1[0],goal1[1]}; float[] end = {goal2[0],goal2[1]};
+
                 currentMatrix.mapPoints(goal1);
                 currentMatrix.mapPoints(goal2);
+
+                if(isStairs(start[0],start[1]))
+                    canvas.drawBitmap(startStairsBmp,
+                            goal1[0] - startStairsBmp.getWidth() / 2, goal1[1]
+                                    - startStairsBmp.getHeight(), paint);
+                else
+                    canvas.drawBitmap(routeStartBmp,
+                            goal1[0] - routeStartBmp.getWidth() / 2, goal1[1]
+                                    - routeStartBmp.getHeight(), paint);
+
+                if(isStairs(end[0],end[1]))
+                    canvas.drawBitmap(endStairsBmp,
+                            goal2[0] - endStairsBmp.getWidth() / 2, goal2[1]
+                                    - endStairsBmp.getHeight(), paint);
+                else
+                    canvas.drawBitmap(routeEndBmp,
+                            goal2[0] - routeEndBmp.getWidth() / 2, goal2[1]
+                                    - routeEndBmp.getHeight(), paint);
+
+                /*
                 canvas.drawBitmap(routeStartBmp,
                         goal1[0] - routeStartBmp.getWidth() / 2, goal1[1]
                                 - routeStartBmp.getHeight(), paint);
                 canvas.drawBitmap(routeEndBmp,
                         goal2[0] - routeEndBmp.getWidth() / 2, goal2[1]
                                 - routeEndBmp.getHeight(), paint);
+
+                 */
             }
 
             canvas.restore();
@@ -115,5 +148,16 @@ public class RouteLayer extends MapBaseLayer {
 
     public void setRouteList(List<Integer> routeList) {
         this.routeList = routeList;
+    }
+
+    public boolean isStairs(float x, float y){
+        if((x > 1558 && x < 1830 && y > 1927 && y < 2100)
+            || (x > 3323 && x < 3454 && y > 1287 && y < 1535)
+                || (x > 3889 && x < 4017 && y > 1287 && y < 1535)
+                || (x > 5511 && x < 5780 && y > 1287 && y < 1535)){
+            return true;
+        }
+        else
+            return  false;
     }
 }

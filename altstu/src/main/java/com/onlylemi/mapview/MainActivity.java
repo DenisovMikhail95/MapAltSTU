@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.onlylemi.mapview.library.MapView;
 import com.onlylemi.mapview.library.layer.MapBaseLayer;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private RouteLayer routeLayer; //слой взаимосвязанных узлов, для прокладки маршрута
     private Button but1, but2, but3, but4, but5; // кнопки этажи
     private  ImageButton butRoute, butRes; //кнопка проложить маршрут и сбросить
+    private TextView tvRoute;
     private String image_name = "map1.png"; //имя файла для отображения
 
     List<PointF> marks; //список меток (координаты)
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         but5 = (Button) findViewById(R.id.butFloor5); but5.setOnClickListener(oclBtn);
         butRoute = findViewById(R.id.butRoute); butRoute.setOnClickListener(oclBtnRoute);
         butRes = findViewById(R.id.butRes); butRes.setOnClickListener(oclBtnRoute);
+        tvRoute = findViewById(R.id.tvRoute);
         //подгружаем данные меток и узлов
         marks = DataFloor1.getMarks();
         marksName = DataFloor1.getMarksName();
@@ -102,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     flag_route = false;
                     mapView.refresh();
                     roomFrom = ""; roomTo = "";
+                    tvRoute.setText("");
                     break;
             }
         }
@@ -130,8 +134,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 case R.id.butFloor1:
                     //указываем имя изображения которое нужно будет загрузить
                     image_name = "map1.png";
-                    //выводим всплывающее сообщение
-                    Toast.makeText(getApplicationContext (), "1 этаж", Toast.LENGTH_LONG).show();
                     //подгружаем метки и узлы соответствующего этажа
                     marks = DataFloor1.getMarks(); marksName = DataFloor1.getMarksName();
                     nodes = DataFloor1.getNodesList(); nodesContact = DataFloor1.getNodesContactList();
@@ -139,28 +141,24 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     break;
                 case R.id.butFloor2:
                     image_name = "map2.png";
-                    Toast.makeText(getApplicationContext (), "2 этаж", Toast.LENGTH_LONG).show();
                     marks = DataFloor2.getMarks(); marksName = DataFloor2.getMarksName();
                     nodes = DataFloor2.getNodesList(); nodesContact = DataFloor2.getNodesContactList();
                     cur_floor = 2;
                     break;
                 case R.id.butFloor3:
                     image_name = "map3.png";
-                    Toast.makeText(getApplicationContext (), "3 этаж", Toast.LENGTH_LONG).show();
                     marks = DataFloor3.getMarks(); marksName = DataFloor3.getMarksName();
                     nodes = DataFloor3.getNodesList(); nodesContact = DataFloor3.getNodesContactList();
                     cur_floor = 3;
                     break;
                 case R.id.butFloor4:
                     image_name = "map4.png";
-                    Toast.makeText(getApplicationContext (), "4 этаж", Toast.LENGTH_LONG).show();
                     marks = DataFloor4.getMarks(); marksName = DataFloor4.getMarksName();
                     nodes = DataFloor4.getNodesList(); nodesContact = DataFloor4.getNodesContactList();
                     cur_floor = 4;
                     break;
                 case R.id.butFloor5:
                     image_name = "map5.png";
-                    Toast.makeText(getApplicationContext (), "5 этаж", Toast.LENGTH_LONG).show();
                     marks = DataFloor5.getMarks(); marksName = DataFloor5.getMarksName();
                     nodes = DataFloor5.getNodesList(); nodesContact = DataFloor5.getNodesContactList();
                     cur_floor = 5;
@@ -182,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 else { //если маршрут на одном этаже
                     buildRoute(indexFrom, indexTo);
                 }
+                tvRoute.setText("Откуда: " + roomFrom + " (" + floorFrom + " этаж)\n" + "Куда: " + roomTo + " (" + floorTo + " этаж)");
             }
 
         }
