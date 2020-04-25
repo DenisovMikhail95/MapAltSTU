@@ -103,10 +103,10 @@ public final class DataFloor2 {
         marks.add(new PointF(7164, 1035));//88
 
         //лестницы
-        marks.add(new PointF(1714, 2014));//88
-        marks.add(new PointF(3391, 1401));//88
-        marks.add(new PointF(3958, 1398));//88
-        marks.add(new PointF(5670, 2009));//88
+        marks.add(new PointF(5670, 2009));//4
+        marks.add(new PointF(3958, 1398));//3
+        marks.add(new PointF(3391, 1401));//2
+        marks.add(new PointF(1714, 2014));//1
 
         return marks;
     }

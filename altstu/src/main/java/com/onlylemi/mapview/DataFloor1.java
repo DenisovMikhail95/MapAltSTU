@@ -80,10 +80,10 @@ public final class DataFloor1 {
         marks.add(new PointF(7090, 1370));
         marks.add(new PointF(6760, 1145));
         //лестницы
-        marks.add(new PointF(1712, 2000));
-        marks.add(new PointF(3357, 1465));
-        marks.add(new PointF(3984, 1448));
-        marks.add(new PointF(5628, 2007));
+        marks.add(new PointF(5628, 2007));//4
+        marks.add(new PointF(3984, 1448));//3
+        marks.add(new PointF(3357, 1465));//2
+        marks.add(new PointF(1712, 2000));//1
         //оставщиеся неиспользующиеся помещения
         /*
         marks.add(new PointF(3910, 1435));
@@ -138,10 +138,10 @@ public final class DataFloor1 {
         for (int i = 0; i < getMarks().size() - 4; i++) {
             marksName.add(Integer.toString(i + 1));
         }
-        marksName.add("Лестница #1");
-        marksName.add("Лестница #2");
-        marksName.add("Лестница #3");
         marksName.add("Лестница #4");
+        marksName.add("Лестница #3");
+        marksName.add("Лестница #2");
+        marksName.add("Лестница #1");
 
         return marksName;
 

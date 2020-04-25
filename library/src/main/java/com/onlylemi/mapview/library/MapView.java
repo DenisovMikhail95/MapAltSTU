@@ -129,23 +129,6 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    public void refresh2(Matrix curMatrix,float curZoom,float curRotate) {
-        if (holder != null) {
-            Canvas canvas = holder.lockCanvas();
-            if (canvas != null) {
-                canvas.drawColor(-1);
-                if (isMapLoadFinish) {
-                    for (MapBaseLayer layer : layers) {
-                        if (layer.isVisible) {
-                            layer.draw(canvas, curMatrix, curZoom, curRotate);
-                        }
-                    }
-                }
-                holder.unlockCanvasAndPost(canvas);
-            }
-        }
-    }
-
     public void reset () {
         currentMatrix.reset();
         currentZoom = 0.1f;

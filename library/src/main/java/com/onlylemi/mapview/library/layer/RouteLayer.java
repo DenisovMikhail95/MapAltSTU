@@ -44,7 +44,7 @@ public class RouteLayer extends MapBaseLayer {
     }
 
     private void initLayer() {
-        this.routeWidth = 10;
+        this.routeWidth = 5;
 
         paint = new Paint();
         paint.setAntiAlias(true);
@@ -78,10 +78,8 @@ public class RouteLayer extends MapBaseLayer {
                         break drawing;
                     }
 
-                    float[] goal1 = {nodeList.get(routeList.get(i)).x,
-                            nodeList.get(routeList.get(i)).y};
-                    float[] goal2 = {nodeList.get(routeList.get(i + 1)).x,
-                            nodeList.get(routeList.get(i + 1)).y};
+                    float[] goal1 = {nodeList.get(routeList.get(i)).x, nodeList.get(routeList.get(i)).y};
+                    float[] goal2 = {nodeList.get(routeList.get(i + 1)).x, nodeList.get(routeList.get(i + 1)).y};
                     currentMatrix.mapPoints(goal1);
                     currentMatrix.mapPoints(goal2);
                     //For test

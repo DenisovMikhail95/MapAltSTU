@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     String roomFrom, roomTo; //начало, конец маршрута (имя помещения)
     int indexFrom, indexTo; //индексы помещений
     int floorFrom, floorTo, cur_floor = 1; //стартовый этаж, конечный, текущий
-    int indexStairs; //индекс лестницы в случае перехода между этажами.
+    int stairs; //лестница в случае перехода между этажами.
     private  boolean flag_route = false; // построен ли маршрут в данный момент
     List<Integer> routeList;
 
@@ -170,8 +170,17 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             //перерисовываем карту
             reloadMap();
             //если был построенный маршрут, отрисовываем
-            if(flag_route  && (cur_floor == floorTo || cur_floor == floorFrom)){
-                buildRoute(indexFrom, indexTo);
+            if(flag_route){
+                //если старт и финиш находятся на разных этажах
+                if(floorFrom != floorTo) {
+                    if(cur_floor == floorFrom)// если текущий этаж стартовый. маршрут от старта к лестнице
+                        buildRoute(indexFrom, marks.size() - stairs);  //(лестницы в конце списка)
+                    else
+                        buildRoute(marks.size() - stairs, indexTo);  //(лестницы в конце списка)
+                }
+                else { //если маршрут на одном этаже
+                    buildRoute(indexFrom, indexTo);
+                }
             }
 
         }
@@ -271,6 +280,19 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                         return;
                                     }
                                     flag_route = true;
+
+                                    //если переход между этажами, определяем лестницу
+                                    if(floorFrom != floorTo){
+                                        if(marks.get(indexTo).x < 2500)
+                                            stairs = 1;
+                                        else if (marks.get(indexTo).x >= 2500 && marks.get(indexTo).x < 3700)
+                                            stairs = 2;
+                                        else if (marks.get(indexTo).x >= 3700 && marks.get(indexTo).x < 4900)
+                                            stairs = 3;
+                                        else if (marks.get(indexTo).x >= 4900)
+                                            stairs = 4;
+                                    }
+
                                     //переключаем на стартовый этаж программным нажатием кнопки. там и отрисуется маршрут
                                     switch (floorFrom){
                                         case 1:
@@ -320,7 +342,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
 
-    //создание строки поиска
+    //создание меню в actionbar, содержащее только строку поиска
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
@@ -332,7 +354,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     //событие нажатия на кнопку поиска
     @Override
     public boolean onQueryTextSubmit(String query) {
-
         int indexRoom = -1, indexFloor = -1;
         List< List<String>> datafloors = new ArrayList<List<String>>();
         datafloors.add(DataFloor1.getMarksName());
@@ -372,13 +393,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
 
         mapView.mapCenterWithPoint(marks.get(indexRoom).x, marks.get(indexRoom).y);
-
         markLayer.setNum(indexRoom);
         markLayer.setClickMark(true);
         mapView.refresh();
         return false;
     }
-
+    //событие изменения текста в строке поиска
     @Override
     public boolean onQueryTextChange(String newText) {
         // User changed the text
