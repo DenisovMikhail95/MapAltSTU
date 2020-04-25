@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /*
         //подгрузка лого АлтГТУ в actionsbar
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         InputStream ims = null;
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         Drawable d = Drawable.createFromStream(ims, null);
         getSupportActionBar().setLogo(d);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
+         */
 
         //получаем кнопки и для каждой указываем слушателя
         but1 = (Button) findViewById(R.id.butFloor1); but1.setOnClickListener(oclBtn);
@@ -169,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             //перерисовываем карту
             reloadMap();
             //если был построенный маршрут, отрисовываем
-            if(flag_route){
+            if(flag_route && (cur_floor == floorFrom || cur_floor == floorTo)){
                 //если старт и финиш находятся на разных этажах
                 if(floorFrom != floorTo) {
                     if(cur_floor == floorFrom)// если текущий этаж стартовый. маршрут от старта к лестнице

@@ -46,7 +46,7 @@ public class RouteLayer extends MapBaseLayer {
     }
 
     private void initLayer() {
-        this.routeWidth = 5;
+        this.routeWidth = 10;
 
         paint = new Paint();
         paint.setAntiAlias(true);
