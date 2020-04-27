@@ -245,6 +245,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             userInputFrom.setText(roomFrom);
             userInputTo.setText(roomTo);
         }
+        userInputFrom.requestFocus();
 
         mDialogBuilder
                 .setTitle("Проложить маршрут")

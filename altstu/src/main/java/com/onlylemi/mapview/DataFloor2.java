@@ -116,10 +116,10 @@ public final class DataFloor2 {
         for (int i = 0; i < getMarks().size() - 4; i++) {
             marksName.add(Integer.toString(i + 200));
         }
-        marksName.add("Лестница #1");
-        marksName.add("Лестница #2");
-        marksName.add("Лестница #3");
         marksName.add("Лестница #4");
+        marksName.add("Лестница #3");
+        marksName.add("Лестница #2");
+        marksName.add("Лестница #1");
 
         return marksName;
     }
