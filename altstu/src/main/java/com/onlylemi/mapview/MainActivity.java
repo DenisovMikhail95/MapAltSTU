@@ -13,10 +13,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -61,20 +64,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*
-        //подгрузка лого АлтГТУ в actionsbar
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        InputStream ims = null;
-        try {
-            ims = getAssets().open("altstu-logo.png");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Drawable d = Drawable.createFromStream(ims, null);
-        getSupportActionBar().setLogo(d);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
-         */
-
         //получаем кнопки и для каждой указываем слушателя
         but1 = (Button) findViewById(R.id.butFloor1); but1.setOnClickListener(oclBtn);
         but2 = (Button) findViewById(R.id.butFloor2); but2.setOnClickListener(oclBtn);
@@ -105,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     routeList = new ArrayList<>();
                     routeLayer.setRouteList(routeList);
                     flag_route = false;
+                    markLayer.setClickMark(false);
                     mapView.refresh();
                     roomFrom = ""; roomTo = "";
                     tvRoute.setText("");
@@ -216,8 +206,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         markLayer.setMarkIsClickListener(new MarkLayer.MarkIsClickListener() {
             @Override
             public void markIsClick(int num) {
-                Toast.makeText(getApplicationContext(), marksName.get(num)
-                        , Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), marksName.get(num), Toast.LENGTH_SHORT).show();
+                loadInfoDialog(num);
             }
         });
 
@@ -400,15 +390,54 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
 
         mapView.mapCenterWithPoint(marks.get(indexRoom).x, marks.get(indexRoom).y);
+        mapView.setCurrentZoom(0.6f);
         markLayer.setNum(indexRoom);
         markLayer.setClickMark(true);
         mapView.refresh();
+        loadInfoDialog(indexRoom);
         return false;
     }
     //событие изменения текста в строке поиска
     @Override
     public boolean onQueryTextChange(String newText) {
-        // User changed the text
+        //markLayer.setClickMark(false);
+        //mapView.refresh();
         return false;
+    }
+
+    protected void loadInfoDialog(int num){
+        //Получаем вид с файла route_dialog.xml, который применим для диалогового окна:
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.info_dialog, null);
+        //Создаем AlertDialog
+        AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(this);
+        //Настраиваем prompt.xml для нашего AlertDialog:
+        mDialogBuilder.setView(promptsView);
+        TextView title = new TextView(this);
+        title.setBackgroundColor(Color.DKGRAY);
+        title.setText(marksName.get(num));
+        title.setPadding(10, 10, 10, 10);
+        title.setGravity(Gravity.CENTER);
+        title.setTextColor(Color.WHITE);
+        title.setTextSize(20);
+        mDialogBuilder.setCustomTitle(title);
+
+        mDialogBuilder
+                .setTitle(marksName.get(num))
+                .setCancelable(false)
+                .setNegativeButton("Закрыть",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                                markLayer.setClickMark(false);
+                            }
+                        });
+        //Создаем AlertDialog:
+        AlertDialog alertDialog = mDialogBuilder.create();
+        WindowManager.LayoutParams params = alertDialog.getWindow().getAttributes();
+        params.gravity = Gravity.BOTTOM;
+        alertDialog.getWindow().setAttributes(params);
+        //и отображаем его:
+        alertDialog.show();
     }
 }

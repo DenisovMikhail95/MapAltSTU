@@ -136,7 +136,7 @@ public final class DataFloor1 {
     public static List<String> getMarksName() {
         List<String> marksName = new ArrayList<>();
         for (int i = 0; i < getMarks().size() - 4; i++) {
-            marksName.add(Integer.toString(i + 1));
+            marksName.add(Integer.toString(i + 100));
         }
         marksName.add("Лестница #4");
         marksName.add("Лестница #3");

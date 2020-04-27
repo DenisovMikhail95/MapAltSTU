@@ -73,7 +73,7 @@ public class MarkLayer extends MapBaseLayer {
                     }
 
                     if (i == marks.size() - 1) {
-                        isClickMark = false;
+                        //isClickMark = false;
                     }
                 }
             }
@@ -125,7 +125,8 @@ public class MarkLayer extends MapBaseLayer {
         this.num = num;
     }
 
-    public void setClickMark(boolean cl) { this.isClickMark = cl; }
+    public void setClickMark(boolean cl) {
+        this.isClickMark = cl; }
 
     public List<PointF> getMarks() {
         return marks;
