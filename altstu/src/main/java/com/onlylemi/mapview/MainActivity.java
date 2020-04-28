@@ -75,8 +75,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         but4 = (Button) findViewById(R.id.butFloor4); but4.setOnClickListener(oclBtn);
         but5 = (Button) findViewById(R.id.butFloor5); but5.setOnClickListener(oclBtn);
         butRoute = findViewById(R.id.butRoute); butRoute.setOnClickListener(oclBtnRoute);
-        butRes = findViewById(R.id.butRes); butRes.setOnClickListener(oclBtnRoute);
-        //если нажимать на кнопку сброса маршрута дольше 5 секунд, включается режим разработчика
+        butRes = findViewById(R.id.butRes);
+        //слушатель для кнопки reset
         butRes.setOnTouchListener(new View.OnTouchListener(){
             long startTime;
             @Override
@@ -84,6 +84,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: // нажатие
                         startTime = System.currentTimeMillis();
+                        routeList = new ArrayList<>();
+                        routeLayer.setRouteList(routeList);
+                        flag_route = false;
+                        markLayer.setClickMark(false);
+                        mapView.refresh();
+                        roomFrom = ""; roomTo = "";
+                        tvRoute.setText("");
+                        but1.setEnabled(true); but2.setEnabled(true); but3.setEnabled(true); but4.setEnabled(true); but5.setEnabled(true);
                         break;
                     case MotionEvent.ACTION_UP: // отпускание
                         long totalTime = System.currentTimeMillis() - startTime;
@@ -92,13 +100,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                         {
                             Toast.makeText(getApplicationContext(), "РЕЖИМ РАЗРАБОТЧИКА", Toast.LENGTH_LONG).show();
                             DeveloperMode = !DeveloperMode;
-
                         }
                 }
                 return true;
             }
         });
-        //***************************************
         tvRoute = findViewById(R.id.tvRoute);
         //подгружаем данные меток и узлов
         marks = DataFloor1.getMarks();
@@ -109,25 +115,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         reloadMap();
     }
 
-    //слушатель кнопки маршрута и сброса
+    //слушатель кнопки маршрута
     View.OnClickListener oclBtnRoute = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.butRoute:
-                    loadRouteDialog(); //вызываем диалог для ввода начала и конца маршрута
-                    break;
-                case R.id.butRes:
-                    routeList = new ArrayList<>();
-                    routeLayer.setRouteList(routeList);
-                    flag_route = false;
-                    markLayer.setClickMark(false);
-                    mapView.refresh();
-                    roomFrom = ""; roomTo = "";
-                    tvRoute.setText("");
-                    but1.setEnabled(true); but2.setEnabled(true); but3.setEnabled(true); but4.setEnabled(true); but5.setEnabled(true);
-                    break;
-            }
+            loadRouteDialog(); //вызываем диалог для ввода начала и конца маршрута
         }
     };
 
@@ -235,7 +227,19 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             @Override
             public void markIsClick(int num) {
                 //Toast.makeText(getApplicationContext(), marksName.get(num), Toast.LENGTH_SHORT).show();
-                loadInfoDialog(num);
+                //loadInfoDialog(num);
+                //****************************
+
+                routeList = MapUtils.getShortestDistanceBetweenTwoPoints
+                        (marks.get(0), marks.get(num), nodes, nodesContact);
+                routeLayer.setNodeList(nodes);
+                routeLayer.setRouteList(routeList);
+                flag_route = true;
+                //mapView.mapCenterWithPoint(marks.get(indFrom).x, marks.get(indFrom).y);
+                //mapView.setCurrentZoom(0.4f);
+                mapView.refresh();
+                //******************************
+
             }
         });
 
@@ -285,7 +289,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                     datafloors.add(DataFloor4.getMarksName());
                                     datafloors.add(DataFloor5.getMarksName());
                                     for(int i = 0 ; i <  datafloors.size(); i++){
-                                        for(int j = 0; j < datafloors.get(i).size() - 1; j++) {
+                                        for(int j = 0; j < datafloors.get(i).size(); j++) {
                                             if (datafloors.get(i).get(j).equals(roomFrom)){
                                                 indexFrom = j; floorFrom = i + 1;
                                             }
@@ -378,7 +382,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mapView.refresh();
     }
 
-    //создание меню в actionbar, содержащее только строку поиска
+    //создание меню в actionbar, содержащее строку поиска
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
@@ -403,8 +407,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         datafloors.add(DataFloor3.getMarksName());
         datafloors.add(DataFloor4.getMarksName());
         datafloors.add(DataFloor5.getMarksName());
-        for(int i = 0 ; i <  datafloors.size(); i++){
-            for(int j = 0; j < datafloors.get(i).size() - 1; j++) {
+        for(int i = 0 ; i <  datafloors.size() ; i++){
+            for(int j = 0; j < datafloors.get(i).size() ; j++) {
                 if (datafloors.get(i).get(j).equals(query.toString())){
                     indexRoom = j; indexFloor = i + 1;
                 }

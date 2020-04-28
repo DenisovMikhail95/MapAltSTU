@@ -154,7 +154,7 @@ public class RouteLayer extends MapBaseLayer {
         if((x > 1558 && x < 1830 && y > 1927 && y < 2100)
             || (x > 3323 && x < 3454 && y > 1287 && y < 1535)
                 || (x > 3889 && x < 4017 && y > 1287 && y < 1535)
-                || (x > 5511 && x < 5780 && y > 1287 && y < 1535)){
+                || (x > 5511 && x < 5780 && y > 1927 && y < 2100)){
             return true;
         }
         else

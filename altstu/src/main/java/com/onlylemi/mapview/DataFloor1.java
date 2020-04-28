@@ -250,7 +250,7 @@ public final class DataFloor1 {
         nodes.add(new PointF(6445, 1951));//96
         nodes.add(new PointF(6567, 2158));//97
         nodes.add(new PointF(6535, 2410));//98
-        nodes.add(new PointF(5562, 2071));//99
+        nodes.add(new PointF(5663, 2028));//99
         nodes.add(new PointF(6803, 2157));//100
         nodes.add(new PointF(6837, 2395));//101
         nodes.add(new PointF(6982, 2167));//102
@@ -266,6 +266,7 @@ public final class DataFloor1 {
         nodes.add(new PointF(6791, 1275));//112
         nodes.add(new PointF(7109, 1207));//113
         nodes.add(new PointF(6734, 1166));//114
+        nodes.add(new PointF(5369, 1984));//115
 
         return nodes;
     }
@@ -356,8 +357,9 @@ public final class DataFloor1 {
         nodesContact.add(new PointF(80, 82));
         nodesContact.add(new PointF(80, 83));
         nodesContact.add(new PointF(83, 84));
-        nodesContact.add(new PointF(83, 85));
-        nodesContact.add(new PointF(83, 99));
+        nodesContact.add(new PointF(83, 115));
+        nodesContact.add(new PointF(115, 85));
+        nodesContact.add(new PointF(115, 99));
         nodesContact.add(new PointF(85, 86));
         nodesContact.add(new PointF(86, 87));
         nodesContact.add(new PointF(86, 88));
