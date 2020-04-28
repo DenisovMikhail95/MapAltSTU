@@ -18,6 +18,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -59,6 +60,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private  boolean flag_route = false; // построен ли маршрут в данный момент
     List<Integer> routeList;
 
+    boolean DeveloperMode = false;
+
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +76,29 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         but5 = (Button) findViewById(R.id.butFloor5); but5.setOnClickListener(oclBtn);
         butRoute = findViewById(R.id.butRoute); butRoute.setOnClickListener(oclBtnRoute);
         butRes = findViewById(R.id.butRes); butRes.setOnClickListener(oclBtnRoute);
+        //если нажимать на кнопку сброса маршрута дольше 5 секунд, включается режим разработчика
+        butRes.setOnTouchListener(new View.OnTouchListener(){
+            long startTime;
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: // нажатие
+                        startTime = System.currentTimeMillis();
+                        break;
+                    case MotionEvent.ACTION_UP: // отпускание
+                        long totalTime = System.currentTimeMillis() - startTime;
+                        long totalSecоnds = totalTime / 1000;
+                        if( totalSecоnds >= 5 )
+                        {
+                            Toast.makeText(getApplicationContext(), "РЕЖИМ РАЗРАБОТЧИКА", Toast.LENGTH_LONG).show();
+                            DeveloperMode = !DeveloperMode;
+
+                        }
+                }
+                return true;
+            }
+        });
+        //***************************************
         tvRoute = findViewById(R.id.tvRoute);
         //подгружаем данные меток и узлов
         marks = DataFloor1.getMarks();
@@ -98,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     mapView.refresh();
                     roomFrom = ""; roomTo = "";
                     tvRoute.setText("");
+                    but1.setEnabled(true); but2.setEnabled(true); but3.setEnabled(true); but4.setEnabled(true); but5.setEnabled(true);
                     break;
             }
         }
@@ -309,6 +337,16 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                             but5.performClick();
                                             break;
                                     }
+                                    if (floorFrom != 1 && floorTo != 1)
+                                        but1.setEnabled(false);
+                                    if (floorFrom != 2 && floorTo != 2)
+                                        but2.setEnabled(false);
+                                    if (floorFrom != 3 && floorTo != 3)
+                                        but3.setEnabled(false);
+                                    if (floorFrom != 4 && floorTo != 4)
+                                        but4.setEnabled(false);
+                                    if (floorFrom != 5 && floorTo != 5)
+                                        but5.setEnabled(false);
                                 }
                                 else{
                                     Toast.makeText(getApplicationContext (), "Заполните оба поля!", Toast.LENGTH_LONG).show();
@@ -336,6 +374,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         routeLayer.setRouteList(routeList);
         flag_route = true;
         mapView.mapCenterWithPoint(marks.get(indFrom).x, marks.get(indFrom).y);
+        //mapView.setCurrentZoom(0.4f);
         mapView.refresh();
     }
 
@@ -346,6 +385,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         MenuItem searchItem = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(this);
+        menu.add("Главный корпус (ГК)");
+        menu.add("Корпус Д");
+        menu.add("Корпус Г");
+        menu.add("Пищевой корпус (ПК)");
+        menu.add("Корпус В");
+        menu.add("Новый корпус");
         return true;
     }
     //событие нажатия на кнопку поиска
