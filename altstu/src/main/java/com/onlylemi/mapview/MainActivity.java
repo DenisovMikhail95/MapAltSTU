@@ -311,6 +311,26 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                     }
                                     flag_route = true;
 
+                                    if(cur_floor != floorFrom) {
+                                        switch (floorFrom){
+                                            case 1:
+                                                marks = DataFloor1.getMarks();
+                                                break;
+                                            case 2:
+                                                marks = DataFloor2.getMarks();
+                                                break;
+                                            case 3:
+                                                marks = DataFloor3.getMarks();
+                                                break;
+                                            case 4:
+                                                marks = DataFloor4.getMarks();
+                                                break;
+                                            case 5:
+                                                marks = DataFloor5.getMarks();
+                                                break;
+                                        }
+                                    }
+
                                     //если переход между этажами, определяем лестницу
                                     if(floorFrom != floorTo){
                                         if(marks.get(indexFrom).x < 2500)
