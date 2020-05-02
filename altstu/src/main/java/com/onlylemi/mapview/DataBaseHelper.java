@@ -6,6 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.PointF;
 import android.util.Log;
 
 import java.io.File;
@@ -13,10 +14,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
-    private static String DB_PATH = "/data/data/startandroid.ru.existdb/databases/";
+    private static String DB_PATH = "/data/data/com.onlylemi.mapview/databases/";
     private static String DB_NAME = "altstudb";
     private SQLiteDatabase myDataBase;
     private final Context mContext;
@@ -94,6 +97,67 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    }
+
+    public Floor getDataFloor(String building, String floor){
+
+        Floor floor_data = new Floor();
+        String q = "SELECT id FROM building WHERE name = '" + building + "'";
+        Cursor c = myDataBase.rawQuery(q, null);
+        c.moveToFirst();
+        int id_building = c.getInt(0);
+        c.close();
+
+        q = "SELECT id FROM floor WHERE id_building = '" + id_building + "' AND name = '" + floor  + "'";
+        c = myDataBase.rawQuery(q, null);
+        c.moveToFirst();
+        int id_floor = c.getInt(0);
+        c.close();
+
+        q = "SELECT * FROM object_on_floor WHERE id_floor = '" + id_floor + "' ORDER BY id";
+        c = myDataBase.rawQuery(q, null);
+        int idInd = c.getColumnIndex("id");
+        int typeInd = c.getColumnIndex("id_type_object");
+        int nameInd = c.getColumnIndex("name");
+        int posxInd = c.getColumnIndex("pos_x");
+        int posyInd = c.getColumnIndex("pos_y");
+        int descInd = c.getColumnIndex("description");
+        c.moveToFirst();
+        do {
+            floor_data.getListId().add(c.getInt(idInd));
+            floor_data.getListType().add(c.getInt(typeInd));
+            floor_data.getListName().add(c.getString(nameInd));
+            floor_data.getListPos().add(new PointF(c.getFloat(posxInd),c.getFloat(posyInd)));
+            floor_data.getListDesctription().add(c.getString(descInd));
+        } while (c.moveToNext());
+        c.close();
+
+        return floor_data;
+    }
+
+    public List<String> getMarksName(String building, String floor){
+        List<String> names = new ArrayList<>();
+        String q = "SELECT id FROM building WHERE name = '" + building + "'";
+        Cursor c = myDataBase.rawQuery(q, null);
+        c.moveToFirst();
+        int id_building = c.getInt(0);
+        c.close();
+
+        q = "SELECT id FROM floor WHERE id_building = '" + id_building + "' AND name = '" + floor  + "'";
+        c = myDataBase.rawQuery(q, null);
+        c.moveToFirst();
+        int id_floor = c.getInt(0);
+        c.close();
+
+        q = "SELECT name FROM object_on_floor WHERE id_floor = '" + id_floor + "' ORDER BY id";
+        c = myDataBase.rawQuery(q, null);
+        c.moveToFirst();
+        do {
+            names.add(c.getString(0));
+        } while (c.moveToNext());
+        c.close();
+
+        return names;
     }
 
 }

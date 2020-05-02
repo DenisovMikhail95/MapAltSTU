@@ -2,6 +2,8 @@ package com.onlylemi.mapview;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -48,25 +50,37 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private TextView tvRoute;
     private String image_name = "map1.png"; //имя файла для отображения
 
-    List<PointF> marks; //список меток (координаты)
-    List<String> marksName; //список имен меток
+    Floor data_floor; //все данные этажа
     private List<PointF> nodes; //список узлов перемещения
     private List<PointF> nodesContact; //список смежности узлов
 
     String roomFrom = "", roomTo = ""; //начало, конец маршрута (имя помещения)
     int indexFrom, indexTo; //индексы помещений
     int floorFrom, floorTo, cur_floor = 1; //стартовый этаж, конечный, текущий
+    String cur_building = "Главный корпус";
     int stairs; //лестница в случае перехода между этажами.
     private  boolean flag_route = false; // построен ли маршрут в данный момент
     List<Integer> routeList;
 
     boolean DeveloperMode = false;
 
+    DataBaseHelper myDbHelper;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //подключаемся к базе
+        myDbHelper = new DataBaseHelper(this);
+        try {
+            myDbHelper.createDataBase();
+            myDbHelper.openDataBase();
+        } catch (IOException ioe) {
+        }
+        //берем из базы данные о этаже
+        data_floor = myDbHelper.getDataFloor(cur_building, "1");
 
         //получаем кнопки и для каждой указываем слушателя
         but1 = (Button) findViewById(R.id.butFloor1); but1.setOnClickListener(oclBtn);
@@ -106,12 +120,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             }
         });
         tvRoute = findViewById(R.id.tvRoute);
-        //подгружаем данные меток и узлов
-        marks = DataFloor1.getMarks();
-        marksName = DataFloor1.getMarksName();
         nodes = DataFloor1.getNodesList();
         nodesContact = DataFloor1.getNodesContactList();
-
         reloadMap();
     }
 
@@ -134,8 +144,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             but3.setTextColor(Color.WHITE);
             but4.setTextColor(Color.WHITE);
             but5.setTextColor(Color.WHITE);
-            //нужно очистить старый слои с метками и узлами, так как переходим на новый этаж
-            marks = null; marksName = null;
+            //нужно очистить старые слои с метками и узлами, так как переходим на новый этаж
             nodes = null; nodesContact = null;
             List<MapBaseLayer> layers = mapView.getLayers();
             layers.remove(layers.size() -1);
@@ -146,32 +155,32 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 case R.id.butFloor1:
                     //указываем имя изображения которое нужно будет загрузить
                     image_name = "map1.png";
-                    //подгружаем метки и узлы соответствующего этажа
-                    marks = DataFloor1.getMarks(); marksName = DataFloor1.getMarksName();
+                    //подгружаем из базы данные соответствующего этажа
+                    data_floor = myDbHelper.getDataFloor(cur_building,"1");
                     nodes = DataFloor1.getNodesList(); nodesContact = DataFloor1.getNodesContactList();
                     cur_floor = 1;
                     break;
                 case R.id.butFloor2:
                     image_name = "map2.png";
-                    marks = DataFloor2.getMarks(); marksName = DataFloor2.getMarksName();
+                    data_floor = myDbHelper.getDataFloor(cur_building,"2");
                     nodes = DataFloor2.getNodesList(); nodesContact = DataFloor2.getNodesContactList();
                     cur_floor = 2;
                     break;
                 case R.id.butFloor3:
                     image_name = "map3.png";
-                    marks = DataFloor3.getMarks(); marksName = DataFloor3.getMarksName();
+                    data_floor = myDbHelper.getDataFloor(cur_building,"3");
                     nodes = DataFloor3.getNodesList(); nodesContact = DataFloor3.getNodesContactList();
                     cur_floor = 3;
                     break;
                 case R.id.butFloor4:
                     image_name = "map4.png";
-                    marks = DataFloor4.getMarks(); marksName = DataFloor4.getMarksName();
+                    data_floor = myDbHelper.getDataFloor(cur_building,"4");
                     nodes = DataFloor4.getNodesList(); nodesContact = DataFloor4.getNodesContactList();
                     cur_floor = 4;
                     break;
                 case R.id.butFloor5:
                     image_name = "map5.png";
-                    marks = DataFloor5.getMarks(); marksName = DataFloor5.getMarksName();
+                    data_floor = myDbHelper.getDataFloor(cur_building,"5");
                     nodes = DataFloor5.getNodesList(); nodesContact = DataFloor5.getNodesContactList();
                     cur_floor = 5;
                     break;
@@ -183,11 +192,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             //если был построенный маршрут, отрисовываем
             if(flag_route && (cur_floor == floorFrom || cur_floor == floorTo)){
                 //если старт и финиш находятся на разных этажах
+
                 if(floorFrom != floorTo) {
                     if(cur_floor == floorFrom)// если текущий этаж стартовый. маршрут от старта к лестнице
-                        buildRoute(indexFrom, marks.size() - stairs);  //(лестницы в конце списка)
+                        buildRoute(indexFrom, data_floor.getListPos().size() - stairs);  //(лестницы в конце списка)
                     else
-                        buildRoute(marks.size() - stairs, indexTo);  //(лестницы в конце списка)
+                        buildRoute(data_floor.getListPos().size() - stairs, indexTo);  //(лестницы в конце списка)
                 }
                 else { //если маршрут на одном этаже
                     buildRoute(indexFrom, indexTo);
@@ -215,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mapView.loadMap(bitmap);
         //инициализируем слой меток
         markLayer = null;
-        markLayer = new MarkLayer(mapView, marks, marksName);
+        markLayer = new MarkLayer(mapView, data_floor.getListPos(), data_floor.getListName());
         mapView.addLayer(markLayer);
         //инициализируем слой узлов маршрута
         MapUtils.init(nodes.size(), nodesContact.size());
@@ -271,11 +281,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                     //поиск индексов помещений по этажам
                                     indexTo = -1; indexFrom = -1;
                                     List< List<String>> datafloors = new ArrayList<List<String>>();
-                                    datafloors.add(DataFloor1.getMarksName());
-                                    datafloors.add(DataFloor2.getMarksName());
-                                    datafloors.add(DataFloor3.getMarksName());
-                                    datafloors.add(DataFloor4.getMarksName());
-                                    datafloors.add(DataFloor5.getMarksName());
+                                    datafloors.add(myDbHelper.getMarksName(cur_building, "1"));
+                                    datafloors.add(myDbHelper.getMarksName(cur_building, "2"));
+                                    datafloors.add(myDbHelper.getMarksName(cur_building, "3"));
+                                    datafloors.add(myDbHelper.getMarksName(cur_building, "4"));
+                                    datafloors.add(myDbHelper.getMarksName(cur_building, "5"));
                                     for(int i = 0 ; i <  datafloors.size(); i++){
                                         for(int j = 0; j < datafloors.get(i).size(); j++) {
                                             if (datafloors.get(i).get(j).equals(roomFrom)){
@@ -302,32 +312,32 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                     if(cur_floor != floorFrom) {
                                         switch (floorFrom){
                                             case 1:
-                                                marks = DataFloor1.getMarks();
+                                                data_floor = myDbHelper.getDataFloor(cur_building, "1");
                                                 break;
                                             case 2:
-                                                marks = DataFloor2.getMarks();
+                                                data_floor = myDbHelper.getDataFloor(cur_building, "2");
                                                 break;
                                             case 3:
-                                                marks = DataFloor3.getMarks();
+                                                data_floor = myDbHelper.getDataFloor(cur_building, "3");
                                                 break;
                                             case 4:
-                                                marks = DataFloor4.getMarks();
+                                                data_floor = myDbHelper.getDataFloor(cur_building, "4");
                                                 break;
                                             case 5:
-                                                marks = DataFloor5.getMarks();
+                                                data_floor = myDbHelper.getDataFloor(cur_building, "5");
                                                 break;
                                         }
                                     }
 
                                     //если переход между этажами, определяем лестницу
                                     if(floorFrom != floorTo){
-                                        if(marks.get(indexFrom).x < 2500)
+                                        if(data_floor.getListPos().get(indexFrom).x < 2500)
                                             stairs = 1;
-                                        else if (marks.get(indexFrom).x >= 2500 && marks.get(indexFrom).x < 3700)
+                                        else if (data_floor.getListPos().get(indexFrom).x >= 2500 && data_floor.getListPos().get(indexFrom).x < 3700)
                                             stairs = 2;
-                                        else if (marks.get(indexFrom).x >= 3700 && marks.get(indexFrom).x < 4900)
+                                        else if (data_floor.getListPos().get(indexFrom).x >= 3700 && data_floor.getListPos().get(indexFrom).x < 4900)
                                             stairs = 3;
-                                        else if (marks.get(indexFrom).x >= 4900)
+                                        else if (data_floor.getListPos().get(indexFrom).x >= 4900)
                                             stairs = 4;
                                     }
 
@@ -381,11 +391,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     protected  void buildRoute(int indFrom, int indTo){
         //используем функцию поиска кратчайшего пути между помещениями
         routeList = MapUtils.getShortestDistanceBetweenTwoPoints
-                (marks.get(indFrom), marks.get(indTo), nodes, nodesContact);
+                (data_floor.getListPos().get(indFrom),data_floor.getListPos().get(indTo), nodes, nodesContact);
         routeLayer.setNodeList(nodes);
         routeLayer.setRouteList(routeList);
         flag_route = true;
-        mapView.mapCenterWithPoint(marks.get(indFrom).x, marks.get(indFrom).y);
+        mapView.mapCenterWithPoint(data_floor.getListPos().get(indFrom).x, data_floor.getListPos().get(indFrom).y);
         //mapView.setCurrentZoom(0.4f);
         mapView.refresh();
     }
@@ -410,11 +420,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     public boolean onQueryTextSubmit(String query) {
         int indexRoom = -1, indexFloor = -1;
         List< List<String>> datafloors = new ArrayList<List<String>>();
-        datafloors.add(DataFloor1.getMarksName());
-        datafloors.add(DataFloor2.getMarksName());
-        datafloors.add(DataFloor3.getMarksName());
-        datafloors.add(DataFloor4.getMarksName());
-        datafloors.add(DataFloor5.getMarksName());
+        datafloors.add(myDbHelper.getMarksName(cur_building, "1"));
+        datafloors.add(myDbHelper.getMarksName(cur_building, "2"));
+        datafloors.add(myDbHelper.getMarksName(cur_building, "3"));
+        datafloors.add(myDbHelper.getMarksName(cur_building, "4"));
+        datafloors.add(myDbHelper.getMarksName(cur_building, "5"));
         for(int i = 0 ; i <  datafloors.size() ; i++){
             for(int j = 0; j < datafloors.get(i).size() ; j++) {
                 if (datafloors.get(i).get(j).equals(query.toString())){
@@ -446,7 +456,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 break;
         }
 
-        mapView.mapCenterWithPoint(marks.get(indexRoom).x, marks.get(indexRoom).y);
+        mapView.mapCenterWithPoint(data_floor.getListPos().get(indexRoom).x, data_floor.getListPos().get(indexRoom).y);
         mapView.setCurrentZoom(0.6f);
         markLayer.setNum(indexRoom);
         markLayer.setClickMark(true);
@@ -457,8 +467,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     //событие изменения текста в строке поиска
     @Override
     public boolean onQueryTextChange(String newText) {
-        //markLayer.setClickMark(false);
-        //mapView.refresh();
         return false;
     }
 
@@ -468,11 +476,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         View promptsView = li.inflate(R.layout.info_dialog, null);
         //Создаем AlertDialog
         AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(this);
-        //Настраиваем prompt.xml для нашего AlertDialog:
+        //Настраиваем xml для нашего AlertDialog:
         mDialogBuilder.setView(promptsView);
         TextView title = new TextView(this);
         title.setBackgroundColor(Color.DKGRAY);
-        title.setText(marksName.get(num));
+        title.setText(data_floor.getListName().get(num));
         title.setPadding(10, 10, 10, 10);
         title.setGravity(Gravity.CENTER);
         title.setTextColor(Color.WHITE);
@@ -480,7 +488,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mDialogBuilder.setCustomTitle(title);
 
         mDialogBuilder
-                .setTitle(marksName.get(num))
+                .setTitle(data_floor.getListName().get(num))
                 .setCancelable(false)
                 .setNegativeButton("Закрыть",
                         new DialogInterface.OnClickListener() {
