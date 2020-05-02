@@ -112,8 +112,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                         long totalSecоnds = totalTime / 1000;
                         if( totalSecоnds >= 5 )
                         {
-                            Toast.makeText(getApplicationContext(), "РЕЖИМ РАЗРАБОТЧИКА", Toast.LENGTH_LONG).show();
                             DeveloperMode = !DeveloperMode;
+                            if(DeveloperMode)
+                                Toast.makeText(getApplicationContext(), "РЕЖИМ РАЗРАБОТЧИКА", Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(getApplicationContext(), "ПОЛЬЗОВАТЕЛЬСКИЙ РЕЖИМ", Toast.LENGTH_SHORT).show();
                         }
                 }
                 return true;
@@ -463,13 +466,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     protected void loadInfoDialog(int num){
-        //Получаем вид с файла route_dialog.xml, который применим для диалогового окна:
         LayoutInflater li = LayoutInflater.from(this);
-        View promptsView = li.inflate(R.layout.info_dialog, null);
-        //Создаем AlertDialog
+        View promptsView;
         AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(this);
-        //Настраиваем xml для нашего AlertDialog:
-        mDialogBuilder.setView(promptsView);
+        //настройка title
         TextView title = new TextView(this);
         title.setBackgroundColor(Color.DKGRAY);
         title.setText(data_floor.getListName().get(num));
@@ -479,16 +479,58 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         title.setTextSize(20);
         mDialogBuilder.setCustomTitle(title);
 
-        mDialogBuilder
-                .setTitle(data_floor.getListName().get(num))
-                .setCancelable(false)
-                .setNegativeButton("Закрыть",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
-                                dialog.cancel();
-                                markLayer.setClickMark(false);
-                            }
-                        });
+        if(DeveloperMode){
+            //Получаем вид с файла info_dialog_admin.xml, который применим для диалогового окна:
+            promptsView = li.inflate(R.layout.info_dialog_admin, null);
+            //Настраиваем xml для нашего AlertDialog:
+            mDialogBuilder.setView(promptsView);
+
+            EditText edName = promptsView.findViewById(R.id.edName);
+            EditText edType = promptsView.findViewById(R.id.edType);
+            EditText edDesc = promptsView.findViewById(R.id.edDesc);
+
+            edName.setText(data_floor.getListName().get(num));
+            edType.setText(data_floor.getListType().get(num).toString());
+            edDesc.setText(data_floor.getListDesctription().get(num));
+
+            mDialogBuilder
+                    .setTitle(data_floor.getListName().get(num))
+                    .setCancelable(false)
+                    .setPositiveButton("Сохранить",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    markLayer.setClickMark(false);
+                                }
+                            })
+                    .setNegativeButton("Закрыть",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    dialog.cancel();
+                                    markLayer.setClickMark(false);
+                                }
+                            });
+        }
+        else{
+            //Получаем вид с файла info_dialog.xml, который применим для диалогового окна:
+            promptsView = li.inflate(R.layout.info_dialog, null);
+            //Настраиваем xml для нашего AlertDialog:
+            mDialogBuilder.setView(promptsView);
+
+            TextView tvOutputInfo = promptsView.findViewById(R.id.tvOutputInfo);
+            tvOutputInfo.setText(data_floor.getListDesctription().get(num));
+
+            mDialogBuilder
+                    .setTitle(data_floor.getListName().get(num))
+                    .setCancelable(false)
+                    .setNegativeButton("Закрыть",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,int id) {
+                                    dialog.cancel();
+                                    markLayer.setClickMark(false);
+                                }
+                            });
+        }
+
         //Создаем AlertDialog:
         AlertDialog alertDialog = mDialogBuilder.create();
         WindowManager.LayoutParams params = alertDialog.getWindow().getAttributes();

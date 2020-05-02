@@ -128,7 +128,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             floor_data.getListType().add(c.getInt(typeInd));
             floor_data.getListName().add(c.getString(nameInd));
             floor_data.getListPos().add(new PointF(c.getFloat(posxInd),c.getFloat(posyInd)));
-            floor_data.getListDesctription().add(c.getString(descInd));
+            if(c.getString(descInd) != null)
+                floor_data.getListDesctription().add(c.getString(descInd));
+            else
+                floor_data.getListDesctription().add("");
         } while (c.moveToNext());
         c.close();
 
