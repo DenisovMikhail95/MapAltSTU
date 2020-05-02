@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private String image_name = "map1.png"; //имя файла для отображения
 
     Floor data_floor; //все данные этажа
-    private List<PointF> nodes; //список узлов перемещения
-    private List<PointF> nodesContact; //список смежности узлов
+    //private List<PointF> nodes; //список узлов перемещения
+    //private List<PointF> nodesContact; //список смежности узлов
 
     String roomFrom = "", roomTo = ""; //начало, конец маршрута (имя помещения)
     int indexFrom, indexTo; //индексы помещений
@@ -120,8 +120,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             }
         });
         tvRoute = findViewById(R.id.tvRoute);
-        nodes = DataFloor1.getNodesList();
-        nodesContact = DataFloor1.getNodesContactList();
         reloadMap();
     }
 
@@ -145,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             but4.setTextColor(Color.WHITE);
             but5.setTextColor(Color.WHITE);
             //нужно очистить старые слои с метками и узлами, так как переходим на новый этаж
-            nodes = null; nodesContact = null;
             List<MapBaseLayer> layers = mapView.getLayers();
             layers.remove(layers.size() -1);
             layers.remove(layers.size() -1);
@@ -157,31 +154,26 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     image_name = "map1.png";
                     //подгружаем из базы данные соответствующего этажа
                     data_floor = myDbHelper.getDataFloor(cur_building,"1");
-                    nodes = DataFloor1.getNodesList(); nodesContact = DataFloor1.getNodesContactList();
                     cur_floor = 1;
                     break;
                 case R.id.butFloor2:
                     image_name = "map2.png";
                     data_floor = myDbHelper.getDataFloor(cur_building,"2");
-                    nodes = DataFloor2.getNodesList(); nodesContact = DataFloor2.getNodesContactList();
                     cur_floor = 2;
                     break;
                 case R.id.butFloor3:
                     image_name = "map3.png";
                     data_floor = myDbHelper.getDataFloor(cur_building,"3");
-                    nodes = DataFloor3.getNodesList(); nodesContact = DataFloor3.getNodesContactList();
                     cur_floor = 3;
                     break;
                 case R.id.butFloor4:
                     image_name = "map4.png";
                     data_floor = myDbHelper.getDataFloor(cur_building,"4");
-                    nodes = DataFloor4.getNodesList(); nodesContact = DataFloor4.getNodesContactList();
                     cur_floor = 4;
                     break;
                 case R.id.butFloor5:
                     image_name = "map5.png";
                     data_floor = myDbHelper.getDataFloor(cur_building,"5");
-                    nodes = DataFloor5.getNodesList(); nodesContact = DataFloor5.getNodesContactList();
                     cur_floor = 5;
                     break;
             }
@@ -228,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         markLayer = new MarkLayer(mapView, data_floor.getListPos(), data_floor.getListName());
         mapView.addLayer(markLayer);
         //инициализируем слой узлов маршрута
-        MapUtils.init(nodes.size(), nodesContact.size());
+        MapUtils.init(data_floor.getListNodes().size(), data_floor.getListContacts().size());
         routeLayer = null;
         routeLayer = new RouteLayer(mapView);
         mapView.addLayer(routeLayer);
@@ -391,8 +383,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     protected  void buildRoute(int indFrom, int indTo){
         //используем функцию поиска кратчайшего пути между помещениями
         routeList = MapUtils.getShortestDistanceBetweenTwoPoints
-                (data_floor.getListPos().get(indFrom),data_floor.getListPos().get(indTo), nodes, nodesContact);
-        routeLayer.setNodeList(nodes);
+                (data_floor.getListPos().get(indFrom),data_floor.getListPos().get(indTo), data_floor.getListNodes(), data_floor.getListContacts());
+        routeLayer.setNodeList(data_floor.getListNodes());
         routeLayer.setRouteList(routeList);
         flag_route = true;
         mapView.mapCenterWithPoint(data_floor.getListPos().get(indFrom).x, data_floor.getListPos().get(indFrom).y);

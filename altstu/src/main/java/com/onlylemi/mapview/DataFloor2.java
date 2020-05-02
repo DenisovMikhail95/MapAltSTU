@@ -10,6 +10,7 @@ public final class DataFloor2 {
     private DataFloor2() {}
 
 
+    /*
     public static List<PointF> getMarks() {
 
         List<PointF> marks = new ArrayList<>();
@@ -124,6 +125,8 @@ public final class DataFloor2 {
 
         return marksName;
     }
+
+     */
 
 
     public static List<PointF> getNodesList() {

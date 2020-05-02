@@ -9,7 +9,7 @@ public final class DataFloor3 {
 
     private DataFloor3() {}
 
-
+/*
     public static List<PointF> getMarks() {
         List<PointF> marks = new ArrayList<>();
         marks.add(new PointF(180, 1032));//0
@@ -99,6 +99,8 @@ public final class DataFloor3 {
 
         return marksName;
     }
+
+ */
 
 
     public static List<PointF> getNodesList() {

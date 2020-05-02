@@ -9,7 +9,7 @@ public final class DataFloor5 {
 
     private DataFloor5() {}
 
-
+/*
     public static List<PointF> getMarks() {
         List<PointF> marks = new ArrayList<>();
 
@@ -79,108 +79,110 @@ public final class DataFloor5 {
         return marksName;
     }
 
+ */
+
 
     public static List<PointF> getNodesList() {
         List<PointF> nodes = new ArrayList<>();
-        nodes.add(new PointF(377,1725 ));//0 0
+        nodes.add(new PointF(377,1725 ));//0
         nodes.add(new PointF(180, 1725));//1
         nodes.add(new PointF(565, 1725));//2
-        nodes.add(new PointF(377, 1890));//1 3
+        nodes.add(new PointF(377, 1890));//3
         nodes.add(new PointF(565, 1885));//4
-        nodes.add(new PointF(377,2005 ));//2 5
+        nodes.add(new PointF(377,2005 ));//5
         nodes.add(new PointF(565, 2010));//6
-        nodes.add(new PointF(377, 2140));//3 7
+        nodes.add(new PointF(377, 2140));//7
         nodes.add(new PointF(180, 2145));//8
-        nodes.add(new PointF(650, 2140));//4 9
+        nodes.add(new PointF(650, 2140));//9
         nodes.add(new PointF(565, 2010));//10
         nodes.add(new PointF(465, 2345));//11
-        nodes.add(new PointF(795, 2140));//5 12
+        nodes.add(new PointF(795, 2140));//12
         nodes.add(new PointF(905, 2345));//13
         nodes.add(new PointF(777, 1990));//14
-        nodes.add(new PointF(890, 2140));//6 15
+        nodes.add(new PointF(890, 2140));//15
         nodes.add(new PointF(1055, 1985));//16
-        nodes.add(new PointF(1230, 2140));//7 17
+        nodes.add(new PointF(1230, 2140));//17
         nodes.add(new PointF(1405, 2345));//18
         nodes.add(new PointF(1055, 1985));//19
-        nodes.add(new PointF(1305, 2140));//8 20
+        nodes.add(new PointF(1305, 2140));//20
         nodes.add(new PointF(1400, 1985));//21
-        nodes.add(new PointF(1475, 2140));//9 22
+        nodes.add(new PointF(1475, 2140));//22
         nodes.add(new PointF(1481, 2072));//23
-        nodes.add(new PointF(1655, 2140));//10 24
+        nodes.add(new PointF(1655, 2140));//24
         nodes.add(new PointF(1405, 2345));//25
-        nodes.add(new PointF(1790, 2140));//11 26
+        nodes.add(new PointF(1790, 2140));//26
         nodes.add(new PointF(1765, 2345));//27
-        nodes.add(new PointF(1925, 2140));//12 28
+        nodes.add(new PointF(1925, 2140));//28
         nodes.add(new PointF(1940, 2345));//29
-        nodes.add(new PointF(1925, 2005));//13 30
+        nodes.add(new PointF(1925, 2005));//30
         nodes.add(new PointF(1695, 1995));//31
-        nodes.add(new PointF(1925, 1785));//14 32
+        nodes.add(new PointF(1925, 1785));//32
         nodes.add(new PointF(1885, 1600));//33
-        nodes.add(new PointF(1977, 1605));//15 34
-        nodes.add(new PointF(2100, 1605));//16 35
+        nodes.add(new PointF(1977, 1605));//34
+        nodes.add(new PointF(2100, 1605));//35
         nodes.add(new PointF(2100, 1890));//36
-        nodes.add(new PointF(2240, 1605));//17 37
+        nodes.add(new PointF(2240, 1605));//37
         nodes.add(new PointF(2430, 1890));//38
-        nodes.add(new PointF(2455, 1605));//18 39
-        nodes.add(new PointF(2695, 1605));//19 40
+        nodes.add(new PointF(2455, 1605));//39
+        nodes.add(new PointF(2695, 1605));//40
         nodes.add(new PointF(2430, 1890));//41
-        nodes.add(new PointF(2785, 1605));//20 42
+        nodes.add(new PointF(2785, 1605));//42
         nodes.add(new PointF(2945, 1890));//43
-        nodes.add(new PointF(2970, 1605));//21 44
-        nodes.add(new PointF(3130, 1605));//22 45
+        nodes.add(new PointF(2970, 1605));//44
+        nodes.add(new PointF(3130, 1605));//45
         nodes.add(new PointF(2945, 1890));//46
-        nodes.add(new PointF(3230, 1605));//24 47
+        nodes.add(new PointF(3230, 1605));//47
         nodes.add(new PointF(3405, 1890));//48
-        nodes.add(new PointF(3385, 1605));//23 49
+        nodes.add(new PointF(3385, 1605));//49
         nodes.add(new PointF(3377, 1390));//50
-        nodes.add(new PointF(3560, 1605));//24 51
+        nodes.add(new PointF(3560, 1605));//51
         nodes.add(new PointF(3405, 1890));//52
-        nodes.add(new PointF(3640, 1605));//25 53
-        nodes.add(new PointF(3700, 1605));//26 53
+        nodes.add(new PointF(3640, 1605));//53
+        nodes.add(new PointF(3700, 1605));//53
         nodes.add(new PointF(3855, 1890));//54
-        nodes.add(new PointF(3700, 1605));//26 55
+        nodes.add(new PointF(3700, 1605));//55
         nodes.add(new PointF(3645, 1385));//56
-        nodes.add(new PointF(3755, 1605));//27 57
-        nodes.add(new PointF(3835, 1605));//28 58
+        nodes.add(new PointF(3755, 1605));//57
+        nodes.add(new PointF(3835, 1605));//58
         nodes.add(new PointF(3645, 1385));//59
-        nodes.add(new PointF(3960, 1605));//29 60
+        nodes.add(new PointF(3960, 1605));//60
         nodes.add(new PointF(3950, 1390));//61
-        nodes.add(new PointF(4095, 1605));//30 62
+        nodes.add(new PointF(4095, 1605));//62
         nodes.add(new PointF(3855, 1890));//63
-        nodes.add(new PointF(4190, 1605));//31 64
+        nodes.add(new PointF(4190, 1605));//64
         nodes.add(new PointF(4345, 1890));//65
-        nodes.add(new PointF(4375, 1605));//32 66
-        nodes.add(new PointF(4535, 1605));//33 67
+        nodes.add(new PointF(4375, 1605));//66
+        nodes.add(new PointF(4535, 1605));//67
         nodes.add(new PointF(4345, 1890));//68
-        nodes.add(new PointF(4620, 1605));//34 69
+        nodes.add(new PointF(4620, 1605));//69
         nodes.add(new PointF(4645, 1890));//70
-        nodes.add(new PointF(4905, 1605));//35 71
-        nodes.add(new PointF(5237, 1605));//36 72
+        nodes.add(new PointF(4905, 1605));//71
+        nodes.add(new PointF(5237, 1605));//72
         nodes.add(new PointF(4985, 1890));//73
-        nodes.add(new PointF(5335, 1605));//37 74
-        nodes.add(new PointF(5375, 1785));//38 75
+        nodes.add(new PointF(5335, 1605));//74
+        nodes.add(new PointF(5375, 1785));//75
         nodes.add(new PointF(5421, 1600));//76
-        nodes.add(new PointF(5375, 1997));//39 77
+        nodes.add(new PointF(5375, 1997));//77
         nodes.add(new PointF(5670, 2009));//78
-        nodes.add(new PointF(5375, 2140));//40 79
+        nodes.add(new PointF(5375, 2140));//79
         nodes.add(new PointF(5395, 2345));//80
-        nodes.add(new PointF(5535, 2140));//41 81
+        nodes.add(new PointF(5535, 2140));//81
         nodes.add(new PointF(5615, 2345));//82
-        nodes.add(new PointF(5680, 2140));//42 83
-        nodes.add(new PointF(5830, 2140));//43 84
+        nodes.add(new PointF(5680, 2140));//83
+        nodes.add(new PointF(5830, 2140));//84
         nodes.add(new PointF(5825, 2072));//85
         nodes.add(new PointF(5830, 2345));//86
-        nodes.add(new PointF(6015, 2140));//44 87
+        nodes.add(new PointF(6015, 2140));//87
         nodes.add(new PointF(5825, 2072));//88
-        nodes.add(new PointF(6095, 2140));//45 89
+        nodes.add(new PointF(6095, 2140));//89
         nodes.add(new PointF(6180, 1985));//90
-        nodes.add(new PointF(6280, 2140));//46 91
+        nodes.add(new PointF(6280, 2140));//91
         nodes.add(new PointF(6110, 2345));//92
-        nodes.add(new PointF(6380, 2140));//47 93
+        nodes.add(new PointF(6380, 2140));//93
         nodes.add(new PointF(6385, 2345));//94
-        nodes.add(new PointF(6555, 2140));//48 95
+        nodes.add(new PointF(6555, 2140));//95
         nodes.add(new PointF(6475, 1985));//96
-        nodes.add(new PointF(6555, 2285));//49 97
+        nodes.add(new PointF(6555, 2285));//97
         nodes.add(new PointF(6540, 2415));//98
         nodes.add(new PointF(6940, 2345));//99
 

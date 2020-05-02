@@ -132,6 +132,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         } while (c.moveToNext());
         c.close();
 
+        q = "SELECT pos_x,pos_y FROM node WHERE id_floor = '" + id_floor + "' ORDER BY CAST(number AS INTEGER)";
+        c = myDataBase.rawQuery(q, null);
+        c.moveToFirst();
+        do {
+            floor_data.getListNodes().add(new PointF(c.getFloat(0),c.getFloat(1)));
+        } while (c.moveToNext());
+        c.close();
+
+        q = "SELECT number_from,number_to FROM contact WHERE id_floor = '" + id_floor + "'";
+        c = myDataBase.rawQuery(q, null);
+        c.moveToFirst();
+        do {
+            floor_data.getListContacts().add(new PointF(c.getFloat(0),c.getFloat(1)));
+        } while (c.moveToNext());
+        c.close();
+
         return floor_data;
     }
 

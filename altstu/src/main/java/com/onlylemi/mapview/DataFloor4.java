@@ -9,7 +9,7 @@ public final class DataFloor4 {
 
     private DataFloor4() {}
 
-
+/*
     public static List<PointF> getMarks() {
         List<PointF> marks = new ArrayList<>();
         marks.add(new PointF(379, 1352));//0
@@ -86,6 +86,8 @@ public final class DataFloor4 {
         marksName.add("Лестница #1");
         return marksName;
     }
+
+ */
 
 
 

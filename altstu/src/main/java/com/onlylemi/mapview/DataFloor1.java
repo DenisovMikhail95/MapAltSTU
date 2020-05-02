@@ -11,7 +11,7 @@ public final class DataFloor1 {
 
     }
 
-
+    /*
     //координаты меток помещений
     public static List<PointF> getMarks() {
         List<PointF> marks = new ArrayList<>();
@@ -104,6 +104,8 @@ public final class DataFloor1 {
         return marksName;
 
     }
+
+     */
 
 
     //список узлов маршрута
