@@ -7,7 +7,10 @@ import java.util.List;
 
 public final class DataFloor1 {
 
-    private DataFloor1() {}
+    private DataFloor1() {
+
+    }
+
 
     //координаты меток помещений
     public static List<PointF> getMarks() {
@@ -84,55 +87,10 @@ public final class DataFloor1 {
         marks.add(new PointF(3984, 1448));//3
         marks.add(new PointF(3357, 1465));//2
         marks.add(new PointF(1712, 2000));//1
-        //оставщиеся неиспользующиеся помещения
-        /*
-        marks.add(new PointF(3910, 1435));
-        marks.add(new PointF(3970, 1305));
-        marks.add(new PointF(3395, 1170));
-        marks.add(new PointF(3680, 1170));
-        marks.add(new PointF(3955, 1170));
-        marks.add(new PointF(3980, 1040));
-        marks.add(new PointF(3665, 735));
-        marks.add(new PointF(3340, 275));
-        marks.add(new PointF(3500, 280));
-        marks.add(new PointF(3670, 245));
-        marks.add(new PointF(3795, 245));
-        marks.add(new PointF(3780, 360));
-        marks.add(new PointF(3900, 205));
-        marks.add(new PointF(3900, 290));
-        marks.add(new PointF(5870, 1780));
-        marks.add(new PointF(1400, 1800));
-        marks.add(new PointF(1750, 1550));
-        marks.add(new PointF(1750, 1420));
-        marks.add(new PointF(1750, 1240));
-        marks.add(new PointF(1900, 1220));
-        marks.add(new PointF(2005, 1235));
-        marks.add(new PointF(2295, 1175));
-        marks.add(new PointF(2295, 1230));
-        marks.add(new PointF(2295, 1410));
-        marks.add(new PointF(2120, 1450));
-        marks.add(new PointF(2005, 1450));
-        marks.add(new PointF(2385, 1205));
-        marks.add(new PointF(2455, 1205));
-        marks.add(new PointF(2535, 1205));
-        marks.add(new PointF(2665, 1190));
-        marks.add(new PointF(2630, 1290));
-        marks.add(new PointF(2705, 1290));
-        marks.add(new PointF(2465, 1380));
-        marks.add(new PointF(2215, 915));
-        marks.add(new PointF(2215, 1100));
-        marks.add(new PointF(2395, 1035));
-        marks.add(new PointF(2525, 865));
-        marks.add(new PointF(2585, 1030));
-        marks.add(new PointF(1990, 1615));
-        marks.add(new PointF(7140, 1000));
-        marks.add(new PointF(6955, 1020));
-        marks.add(new PointF(6778, 1019));
-         */
+
         return marks;
     }
 
-    //имена помещений
     public static List<String> getMarksName() {
         List<String> marksName = new ArrayList<>();
         for (int i = 0; i < getMarks().size() - 4; i++) {
@@ -146,6 +104,7 @@ public final class DataFloor1 {
         return marksName;
 
     }
+
 
     //список узлов маршрута
     public static List<PointF> getNodesList() {
@@ -222,7 +181,6 @@ public final class DataFloor1 {
         nodes.add(new PointF(4112, 1642));//69
         nodes.add(new PointF(3995, 1779));//70
         nodes.add(new PointF(3930, 2036));//71
-
         nodes.add(new PointF(4283, 1769));//72
         nodes.add(new PointF(4249, 1580));//73
         nodes.add(new PointF(4204, 1989));//74
@@ -343,7 +301,6 @@ public final class DataFloor1 {
         nodesContact.add(new PointF(67, 69));
         nodesContact.add(new PointF(67, 70));
         nodesContact.add(new PointF(70, 71));
-
         nodesContact.add(new PointF(70, 72));
         nodesContact.add(new PointF(72, 73));
         nodesContact.add(new PointF(72, 74));

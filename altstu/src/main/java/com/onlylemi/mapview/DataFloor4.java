@@ -9,6 +9,7 @@ public final class DataFloor4 {
 
     private DataFloor4() {}
 
+
     public static List<PointF> getMarks() {
         List<PointF> marks = new ArrayList<>();
         marks.add(new PointF(379, 1352));//0
@@ -86,6 +87,8 @@ public final class DataFloor4 {
         return marksName;
     }
 
+
+
     public static List<PointF> getNodesList() {
         List<PointF> nodes = new ArrayList<>();
         nodes.add(new PointF(311, 1285));//0
@@ -97,7 +100,6 @@ public final class DataFloor4 {
         nodes.add(new PointF(1919, 1764));//6
         nodes.add(new PointF(3308, 1773));//7
         nodes.add(new PointF(255, 2175));//8
-
         nodes.add(new PointF(3419, 1606));//9
         nodes.add(new PointF(3365, 1402));//10
         nodes.add(new PointF(3667, 1343));//11
@@ -112,7 +114,6 @@ public final class DataFloor4 {
         nodes.add(new PointF(6961, 2147));//20
         nodes.add(new PointF(6955, 1000));//21
 
-
         return nodes;
     }
 
@@ -125,7 +126,6 @@ public final class DataFloor4 {
         nodesContact.add(new PointF(4, 5));
         nodesContact.add(new PointF(4, 6));
         nodesContact.add(new PointF(6, 7));
-
         nodesContact.add(new PointF(7, 9));
         nodesContact.add(new PointF(7, 15));
         nodesContact.add(new PointF(9, 10));

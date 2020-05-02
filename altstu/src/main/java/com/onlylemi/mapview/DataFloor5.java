@@ -9,6 +9,7 @@ public final class DataFloor5 {
 
     private DataFloor5() {}
 
+
     public static List<PointF> getMarks() {
         List<PointF> marks = new ArrayList<>();
 
@@ -78,6 +79,7 @@ public final class DataFloor5 {
         return marksName;
     }
 
+
     public static List<PointF> getNodesList() {
         List<PointF> nodes = new ArrayList<>();
         nodes.add(new PointF(377,1725 ));//0 0
@@ -89,7 +91,6 @@ public final class DataFloor5 {
         nodes.add(new PointF(565, 2010));//6
         nodes.add(new PointF(377, 2140));//3 7
         nodes.add(new PointF(180, 2145));//8
-
         nodes.add(new PointF(650, 2140));//4 9
         nodes.add(new PointF(565, 2010));//10
         nodes.add(new PointF(465, 2345));//11
@@ -111,13 +112,11 @@ public final class DataFloor5 {
         nodes.add(new PointF(1765, 2345));//27
         nodes.add(new PointF(1925, 2140));//12 28
         nodes.add(new PointF(1940, 2345));//29
-
         nodes.add(new PointF(1925, 2005));//13 30
         nodes.add(new PointF(1695, 1995));//31
         nodes.add(new PointF(1925, 1785));//14 32
         nodes.add(new PointF(1885, 1600));//33
         nodes.add(new PointF(1977, 1605));//15 34
-
         nodes.add(new PointF(2100, 1605));//16 35
         nodes.add(new PointF(2100, 1890));//36
         nodes.add(new PointF(2240, 1605));//17 37
@@ -150,7 +149,6 @@ public final class DataFloor5 {
         nodes.add(new PointF(3855, 1890));//63
         nodes.add(new PointF(4190, 1605));//31 64
         nodes.add(new PointF(4345, 1890));//65
-
         nodes.add(new PointF(4375, 1605));//32 66
         nodes.add(new PointF(4535, 1605));//33 67
         nodes.add(new PointF(4345, 1890));//68
@@ -159,13 +157,11 @@ public final class DataFloor5 {
         nodes.add(new PointF(4905, 1605));//35 71
         nodes.add(new PointF(5237, 1605));//36 72
         nodes.add(new PointF(4985, 1890));//73
-
         nodes.add(new PointF(5335, 1605));//37 74
         nodes.add(new PointF(5375, 1785));//38 75
         nodes.add(new PointF(5421, 1600));//76
         nodes.add(new PointF(5375, 1997));//39 77
         nodes.add(new PointF(5670, 2009));//78
-
         nodes.add(new PointF(5375, 2140));//40 79
         nodes.add(new PointF(5395, 2345));//80
         nodes.add(new PointF(5535, 2140));//41 81
@@ -262,7 +258,6 @@ public final class DataFloor5 {
         nodesContact.add(new PointF(65, 67));
         nodesContact.add(new PointF(67, 68));
         nodesContact.add(new PointF(68, 69));
-
         nodesContact.add(new PointF(68, 70));
         nodesContact.add(new PointF(70, 71));
         nodesContact.add(new PointF(70, 72));

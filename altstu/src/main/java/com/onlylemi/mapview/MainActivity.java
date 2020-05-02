@@ -226,19 +226,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         markLayer.setMarkIsClickListener(new MarkLayer.MarkIsClickListener() {
             @Override
             public void markIsClick(int num) {
-                //Toast.makeText(getApplicationContext(), marksName.get(num), Toast.LENGTH_SHORT).show();
-                //loadInfoDialog(num);
-                //****************************
-
-                routeList = MapUtils.getShortestDistanceBetweenTwoPoints
-                        (marks.get(0), marks.get(num), nodes, nodesContact);
-                routeLayer.setNodeList(nodes);
-                routeLayer.setRouteList(routeList);
-                flag_route = true;
-                //mapView.mapCenterWithPoint(marks.get(indFrom).x, marks.get(indFrom).y);
-                //mapView.setCurrentZoom(0.4f);
-                mapView.refresh();
-                //******************************
+                loadInfoDialog(num);
 
             }
         });

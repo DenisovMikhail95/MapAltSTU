@@ -9,6 +9,7 @@ public final class DataFloor2 {
 
     private DataFloor2() {}
 
+
     public static List<PointF> getMarks() {
 
         List<PointF> marks = new ArrayList<>();
@@ -124,6 +125,7 @@ public final class DataFloor2 {
         return marksName;
     }
 
+
     public static List<PointF> getNodesList() {
         List<PointF> nodes = new ArrayList<>();
         nodes.add(new PointF(621, 1067));//0
@@ -149,7 +151,6 @@ public final class DataFloor2 {
         nodes.add(new PointF(619, 2194));//20
         nodes.add(new PointF(653, 2383));//21
         nodes.add(new PointF(795, 2344));//22
-
         nodes.add(new PointF(782, 2172));//23
         nodes.add(new PointF(750, 1939));//24
         nodes.add(new PointF(966, 2180));//25
@@ -189,7 +190,6 @@ public final class DataFloor2 {
         nodes.add(new PointF(3074, 1775));//59
         nodes.add(new PointF(3116, 1621));//60
         nodes.add(new PointF(3108, 1978));//61
-
         nodes.add(new PointF(3366, 1765));//62
         nodes.add(new PointF(3431, 1975));//63
         nodes.add(new PointF(3245, 1953));//64
@@ -211,7 +211,6 @@ public final class DataFloor2 {
         nodes.add(new PointF(3663, 255));//80
         nodes.add(new PointF(3690, 389));//81
         nodes.add(new PointF(3875, 301));//82
-
         nodes.add(new PointF(4669, 1777));//83
         nodes.add(new PointF(4674, 1879));//84
         nodes.add(new PointF(4488, 1983));//85
@@ -223,15 +222,12 @@ public final class DataFloor2 {
         nodes.add(new PointF(5440, 2198));//91
         nodes.add(new PointF(5381, 2376));//92
         nodes.add(new PointF(6958, 2186));//93
-
         nodes.add(new PointF(7040, 2358));//94
         nodes.add(new PointF(6955, 2038));//95
         nodes.add(new PointF(6746, 2048));//96
         nodes.add(new PointF(6960, 1005));//97
         nodes.add(new PointF(6759, 1065));//98
         nodes.add(new PointF(7179, 2202));//99
-
-
 
         return nodes;
     }
@@ -260,7 +256,6 @@ public final class DataFloor2 {
         nodesContact.add(new PointF(17, 20));
         nodesContact.add(new PointF(20, 21));
         nodesContact.add(new PointF(21, 22));
-
         nodesContact.add(new PointF(20, 23));
         nodesContact.add(new PointF(23, 24));
         nodesContact.add(new PointF(23, 25));
@@ -300,12 +295,10 @@ public final class DataFloor2 {
         nodesContact.add(new PointF(55, 59));
         nodesContact.add(new PointF(59, 60));
         nodesContact.add(new PointF(59, 61));
-
         nodesContact.add(new PointF(59, 62));
         nodesContact.add(new PointF(62, 63));
         nodesContact.add(new PointF(63, 64));
         nodesContact.add(new PointF(63, 66));
-        //nodesContact.add(new PointF(66, 67));
         nodesContact.add(new PointF(67, 68));
         nodesContact.add(new PointF(68, 69));
         nodesContact.add(new PointF(69, 70));
@@ -324,7 +317,6 @@ public final class DataFloor2 {
         nodesContact.add(new PointF(79, 81));
         nodesContact.add(new PointF(81, 80));
         nodesContact.add(new PointF(81, 82));
-
         nodesContact.add(new PointF(69, 83));
         nodesContact.add(new PointF(83, 84));
         nodesContact.add(new PointF(84, 85));
@@ -336,7 +328,6 @@ public final class DataFloor2 {
         nodesContact.add(new PointF(89, 91));
         nodesContact.add(new PointF(91, 92));
         nodesContact.add(new PointF(91, 93));
-
         nodesContact.add(new PointF(93, 94));
         nodesContact.add(new PointF(93, 95));
         nodesContact.add(new PointF(95, 96));

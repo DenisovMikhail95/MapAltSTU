@@ -9,6 +9,7 @@ public final class DataFloor3 {
 
     private DataFloor3() {}
 
+
     public static List<PointF> getMarks() {
         List<PointF> marks = new ArrayList<>();
         marks.add(new PointF(180, 1032));//0
@@ -99,6 +100,7 @@ public final class DataFloor3 {
         return marksName;
     }
 
+
     public static List<PointF> getNodesList() {
         List<PointF> nodes = new ArrayList<>();
         nodes.add(new PointF(383, 1013));//0
@@ -110,7 +112,6 @@ public final class DataFloor3 {
         nodes.add(new PointF(1921, 1768));//6
         nodes.add(new PointF(3174, 1764));//7
         nodes.add(new PointF(1912, 1582));//8
-
         nodes.add(new PointF(5321, 1782));//9
         nodes.add(new PointF(5377, 2008));//10
         nodes.add(new PointF(5619, 2021));//11
@@ -138,7 +139,6 @@ public final class DataFloor3 {
         nodesContact.add(new PointF(4, 6));
         nodesContact.add(new PointF(6, 7));
         nodesContact.add(new PointF(6, 8));
-
         nodesContact.add(new PointF(7, 17));
         nodesContact.add(new PointF(17, 19));
         nodesContact.add(new PointF(17, 18));
