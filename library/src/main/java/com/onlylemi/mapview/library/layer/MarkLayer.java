@@ -29,7 +29,7 @@ public class MarkLayer extends MapBaseLayer {
     private MarkIsClickListener listener;
 
     private Bitmap bmpMark, bmpMarkTouch;
-    private  Bitmap bmpStairs, bmpCafe, bmpWC, bmpWard;
+    private  Bitmap bmpStairs, bmpCafe, bmpWC, bmpWard, bmpPrint, bmpTerm, bmpShop;
 
     private float radiusMark;
     private boolean isClickMark = false;
@@ -59,6 +59,9 @@ public class MarkLayer extends MapBaseLayer {
         bmpCafe = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.bmpcafe);
         bmpWC = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.bmpwc);
         bmpWard = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.bmpward);
+        bmpPrint = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.bmpprint);
+        bmpTerm = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.bmpterm);
+        bmpShop = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.bmpshop);
 
         paint = new Paint();
         paint.setAntiAlias(true);
@@ -133,7 +136,18 @@ public class MarkLayer extends MapBaseLayer {
                             canvas.drawBitmap(bmpWard, goal[0] - bmpWard.getWidth() / 2,
                                     goal[1] - bmpWard.getHeight() / 2, paint);
                             break;
-
+                        case 6:
+                            canvas.drawBitmap(bmpPrint, goal[0] - bmpPrint.getWidth() / 2,
+                                    goal[1] - bmpPrint.getHeight() / 2, paint);
+                            break;
+                        case 7:
+                            canvas.drawBitmap(bmpTerm, goal[0] - bmpTerm.getWidth() / 2,
+                                    goal[1] - bmpTerm.getHeight() / 2, paint);
+                            break;
+                        case 8:
+                            canvas.drawBitmap(bmpShop, goal[0] - bmpShop.getWidth() / 2,
+                                    goal[1] - bmpShop.getHeight() / 2, paint);
+                            break;
                     }
 
                     if (i == num && isClickMark) {

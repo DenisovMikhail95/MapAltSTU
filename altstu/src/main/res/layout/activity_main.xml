@@ -52,6 +52,13 @@
             android:layout_height="wrap_content"
             android:text="5"
             style="@style/Widget.AppCompat.Button.Colored" />
+        <Spinner
+            android:id="@+id/spinType"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:drawSelectorOnTop="true"
+            android:paddingBottom="20dp">
+        </Spinner>
     </LinearLayout>
 
     <ImageButton

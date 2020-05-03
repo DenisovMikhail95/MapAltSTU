@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,7 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener  {
 
     private MapView mapView; //слой карты (изображения)
     private MarkLayer markLayer; //слой меток
@@ -458,22 +459,19 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             //имя объекта
             final EditText edName = promptsView.findViewById(R.id.edName);
             edName.setText(data_floor.getListName().get(num));
-            //тип
-            //edType.setText(data_floor.getListType().get(num).toString());
+            //тип объекта
+
             List<String> list_types = myDbHelper.getAllTypes();
+            final Spinner spinner = (Spinner) promptsView.findViewById(R.id.spinType);
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list_types);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            final Spinner spinner = (Spinner) promptsView.findViewById(R.id.spinType);
             spinner.setAdapter(adapter);
             spinner.setPrompt("Тип объекта");
             spinner.setSelection(data_floor.getListType().get(num) - 1);
+
             //описание объекта
             final EditText edDesc = promptsView.findViewById(R.id.edDesc);
             edDesc.setText(data_floor.getListDesctription().get(num));
-
-            //final String old_name = data_floor.getListName().get(num);
-            //final int old_type = (data_floor.getListType().get(num) - 1);
-            //final String old_desc = data_floor.getListDesctription().get(num);
 
             mDialogBuilder
                     .setTitle(data_floor.getListName().get(num))
