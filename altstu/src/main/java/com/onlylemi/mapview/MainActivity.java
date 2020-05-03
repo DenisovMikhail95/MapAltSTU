@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private  boolean flag_route = false; // построен ли маршрут в данный момент
     List<Integer> routeList;
 
-    boolean DeveloperMode = true;
+    boolean DeveloperMode = false;
 
     DataBaseHelper myDbHelper;
 
@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mapView.loadMap(bitmap);
         //инициализируем слой меток
         markLayer = null;
-        markLayer = new MarkLayer(mapView, data_floor.getListPos(), data_floor.getListName());
+        markLayer = new MarkLayer(mapView, data_floor.getListPos(), data_floor.getListName(), data_floor.getListType());
         mapView.addLayer(markLayer);
         //инициализируем слой узлов маршрута
         MapUtils.init(data_floor.getListNodes().size(), data_floor.getListContacts().size());
@@ -490,6 +490,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                     }
                                     switchFloor(cur_floor);
                                     markLayer.setClickMark(false);
+
+                                    myDbHelper.close();
+                                    myDbHelper.openDataBase();
                                 }
                             })
                     .setNegativeButton("Закрыть",

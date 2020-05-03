@@ -25,9 +25,11 @@ public class MarkLayer extends MapBaseLayer {
 
     private List<PointF> marks;
     private List<String> marksName;
+    private List<Integer> marksType;
     private MarkIsClickListener listener;
 
     private Bitmap bmpMark, bmpMarkTouch;
+    private  Bitmap bmpStairs, bmpCafe, bmpWC, bmpWard;
 
     private float radiusMark;
     private boolean isClickMark = false;
@@ -36,13 +38,14 @@ public class MarkLayer extends MapBaseLayer {
     private Paint paint;
 
     public MarkLayer(MapView mapView) {
-        this(mapView, null, null);
+        this(mapView, null, null,null);
     }
 
-    public MarkLayer(MapView mapView, List<PointF> marks, List<String> marksName) {
+    public MarkLayer(MapView mapView, List<PointF> marks, List<String> marksName, List<Integer> marksType) {
         super(mapView);
         this.marks = marks;
         this.marksName = marksName;
+        this.marksType = marksType;
 
         initLayer();
     }
@@ -52,6 +55,10 @@ public class MarkLayer extends MapBaseLayer {
 
         bmpMark = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.mark);
         bmpMarkTouch = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.mark_touch);
+        bmpStairs = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.bmpstairs);
+        bmpCafe = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.bmpcafe);
+        bmpWC = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.bmpwc);
+        bmpWard = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.bmpward);
 
         paint = new Paint();
         paint.setAntiAlias(true);
@@ -95,7 +102,7 @@ public class MarkLayer extends MapBaseLayer {
                     PointF mark = marks.get(i);
                     float[] goal = {mark.x, mark.y};
                     currentMatrix.mapPoints(goal);
-                    paint.setColor(Color.YELLOW);
+                    paint.setColor(Color.RED);
                     paint.setTextSize(radiusMark);
                     paint.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL));
                     //mark name
@@ -105,8 +112,30 @@ public class MarkLayer extends MapBaseLayer {
                                 radiusMark / 2, paint);
                     }
                     //mark ico
-                    canvas.drawBitmap(bmpMark, goal[0] - bmpMark.getWidth() / 2,
-                            goal[1] - bmpMark.getHeight() / 2, paint);
+                    switch (marksType.get(i)){
+                        case 1:
+                            canvas.drawBitmap(bmpMark, goal[0] - bmpMark.getWidth() / 2,
+                                    goal[1] - bmpMark.getHeight() / 2, paint);
+                            break;
+                        case 2:
+                            canvas.drawBitmap(bmpWC, goal[0] - bmpWC.getWidth() / 2,
+                                    goal[1] - bmpWC.getHeight() / 2, paint);
+                            break;
+                        case 3:
+                            canvas.drawBitmap(bmpCafe, goal[0] - bmpCafe.getWidth() / 2,
+                                    goal[1] - bmpCafe.getHeight() / 2, paint);
+                            break;
+                        case 4:
+                            canvas.drawBitmap(bmpStairs, goal[0] - bmpStairs.getWidth() / 2,
+                                    goal[1] - bmpStairs.getHeight() / 2, paint);
+                            break;
+                        case 5:
+                            canvas.drawBitmap(bmpWard, goal[0] - bmpWard.getWidth() / 2,
+                                    goal[1] - bmpWard.getHeight() / 2, paint);
+                            break;
+
+                    }
+
                     if (i == num && isClickMark) {
                         canvas.drawBitmap(bmpMarkTouch, goal[0] - bmpMarkTouch.getWidth() / 2,
                                 goal[1] - bmpMarkTouch.getHeight(), paint);
