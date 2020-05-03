@@ -23,9 +23,11 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.onlylemi.mapview.library.MapView;
@@ -51,8 +53,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private String image_name = "map1.png"; //имя файла для отображения
 
     Floor data_floor; //все данные этажа
-    //private List<PointF> nodes; //список узлов перемещения
-    //private List<PointF> nodesContact; //список смежности узлов
 
     String roomFrom = "", roomTo = ""; //начало, конец маршрута (имя помещения)
     int indexFrom, indexTo; //индексы помещений
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private  boolean flag_route = false; // построен ли маршрут в данный момент
     List<Integer> routeList;
 
-    boolean DeveloperMode = false;
+    boolean DeveloperMode = true;
 
     DataBaseHelper myDbHelper;
 
@@ -337,23 +337,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                                     }
 
                                     //переключаем на стартовый этаж программным нажатием кнопки. там и отрисуется маршрут
-                                    switch (floorFrom){
-                                        case 1:
-                                            but1.performClick();
-                                            break;
-                                        case 2:
-                                            but2.performClick();
-                                            break;
-                                        case 3:
-                                            but3.performClick();
-                                            break;
-                                        case 4:
-                                            but4.performClick();
-                                            break;
-                                        case 5:
-                                            but5.performClick();
-                                            break;
-                                    }
+                                    switchFloor(floorFrom);
+
                                     if (floorFrom != 1 && floorTo != 1)
                                         but1.setEnabled(false);
                                     if (floorFrom != 2 && floorTo != 2)
@@ -433,23 +418,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             Toast.makeText(getApplicationContext(), "Поиск не дал результатов", Toast.LENGTH_LONG).show();
             return false;
         }
-        switch (indexFloor){
-            case 1:
-                but1.performClick();
-                break;
-            case 2:
-                but2.performClick();
-                break;
-            case 3:
-                but3.performClick();
-                break;
-            case 4:
-                but4.performClick();
-                break;
-            case 5:
-                but5.performClick();
-                break;
-        }
+
+        switchFloor(indexFloor);
 
         mapView.mapCenterWithPoint(data_floor.getListPos().get(indexRoom).x, data_floor.getListPos().get(indexRoom).y);
         mapView.setCurrentZoom(0.6f);
@@ -465,7 +435,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         return false;
     }
 
-    protected void loadInfoDialog(int num){
+    protected void loadInfoDialog(final int num){
         LayoutInflater li = LayoutInflater.from(this);
         View promptsView;
         AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(this);
@@ -485,13 +455,25 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             //Настраиваем xml для нашего AlertDialog:
             mDialogBuilder.setView(promptsView);
 
-            EditText edName = promptsView.findViewById(R.id.edName);
-            EditText edType = promptsView.findViewById(R.id.edType);
-            EditText edDesc = promptsView.findViewById(R.id.edDesc);
-
+            //имя объекта
+            final EditText edName = promptsView.findViewById(R.id.edName);
             edName.setText(data_floor.getListName().get(num));
-            edType.setText(data_floor.getListType().get(num).toString());
+            //тип
+            //edType.setText(data_floor.getListType().get(num).toString());
+            List<String> list_types = myDbHelper.getAllTypes();
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list_types);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            final Spinner spinner = (Spinner) promptsView.findViewById(R.id.spinType);
+            spinner.setAdapter(adapter);
+            spinner.setPrompt("Тип объекта");
+            spinner.setSelection(data_floor.getListType().get(num) - 1);
+            //описание объекта
+            final EditText edDesc = promptsView.findViewById(R.id.edDesc);
             edDesc.setText(data_floor.getListDesctription().get(num));
+
+            //final String old_name = data_floor.getListName().get(num);
+            //final int old_type = (data_floor.getListType().get(num) - 1);
+            //final String old_desc = data_floor.getListDesctription().get(num);
 
             mDialogBuilder
                     .setTitle(data_floor.getListName().get(num))
@@ -499,6 +481,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                     .setPositiveButton("Сохранить",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog,int id) {
+                                    //если есть изменения, сохраняем в базу
+                                    if(!data_floor.getListName().get(num).equals(edName.getText().toString())
+                                            || (data_floor.getListType().get(num) - 1) != spinner.getSelectedItemPosition()
+                                            || !data_floor.getListDesctription().get(num).equals(edDesc.getText().toString())){
+                                        myDbHelper.updateObject(data_floor.getListId().get(num), spinner.getSelectedItemPosition() + 1, edName.getText().toString(), edDesc.getText().toString());
+                                        Toast.makeText(getBaseContext(), " Изменения сохранены", Toast.LENGTH_SHORT).show();
+                                    }
+                                    switchFloor(cur_floor);
                                     markLayer.setClickMark(false);
                                 }
                             })
@@ -538,5 +528,25 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         alertDialog.getWindow().setAttributes(params);
         //и отображаем его:
         alertDialog.show();
+    }
+
+    public void switchFloor (int number_floor){
+        switch (number_floor){
+            case 1:
+                but1.performClick();
+                break;
+            case 2:
+                but2.performClick();
+                break;
+            case 3:
+                but3.performClick();
+                break;
+            case 4:
+                but4.performClick();
+                break;
+            case 5:
+                but5.performClick();
+                break;
+        }
     }
 }

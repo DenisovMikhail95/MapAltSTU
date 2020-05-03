@@ -1,5 +1,6 @@
 package com.onlylemi.mapview;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -177,6 +178,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         c.close();
 
         return names;
+    }
+
+    public List<String> getAllTypes(){
+        List<String> types = new ArrayList<>();
+        String q = "SELECT name FROM type_object ORDER BY id";
+        Cursor c = myDataBase.rawQuery(q, null);
+        c.moveToFirst();
+        do {
+            types.add(c.getString(0));
+        } while (c.moveToNext());
+        return types;
+    }
+
+    public void updateObject(int id, int id_type_object, String name, String desc){
+        ContentValues cv = new ContentValues();
+        cv.put("id_type_object", id_type_object);
+        cv.put("name", name);
+        cv.put("description", desc);
+        myDataBase.update("object_on_floor", cv, "id = ?", new String[] {String.valueOf(id)});
     }
 
 }
