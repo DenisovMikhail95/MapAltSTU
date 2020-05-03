@@ -115,7 +115,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         int id_floor = c.getInt(0);
         c.close();
 
-        q = "SELECT * FROM object_on_floor WHERE id_floor = '" + id_floor + "' ORDER BY id";
+        q = "SELECT * FROM object_on_floor WHERE id_floor = '" + id_floor + "' AND id_type_object != 4 ORDER BY id";
         c = myDataBase.rawQuery(q, null);
         int idInd = c.getColumnIndex("id");
         int typeInd = c.getColumnIndex("id_type_object");
@@ -123,6 +123,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         int posxInd = c.getColumnIndex("pos_x");
         int posyInd = c.getColumnIndex("pos_y");
         int descInd = c.getColumnIndex("description");
+        c.moveToFirst();
+        do {
+            floor_data.getListId().add(c.getInt(idInd));
+            floor_data.getListType().add(c.getInt(typeInd));
+            floor_data.getListName().add(c.getString(nameInd));
+            floor_data.getListPos().add(new PointF(c.getFloat(posxInd),c.getFloat(posyInd)));
+            if(c.getString(descInd) != null)
+                floor_data.getListDesctription().add(c.getString(descInd));
+            else
+                floor_data.getListDesctription().add("");
+        } while (c.moveToNext());
+        c.close();
+
+
+        q = "SELECT * FROM object_on_floor WHERE id_floor = '" + id_floor + "' AND id_type_object = 4 ORDER BY id";
+        c = myDataBase.rawQuery(q, null);
         c.moveToFirst();
         do {
             floor_data.getListId().add(c.getInt(idInd));
