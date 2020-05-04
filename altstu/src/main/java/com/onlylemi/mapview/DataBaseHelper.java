@@ -185,7 +185,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         int id_floor = c.getInt(0);
         c.close();
 
-        q = "SELECT name FROM object_on_floor WHERE id_floor = '" + id_floor + "' ORDER BY id";
+        q = "SELECT name FROM object_on_floor WHERE id_floor = '" + id_floor + "' AND id_type_object != 4 ORDER BY id";
+        c = myDataBase.rawQuery(q, null);
+        c.moveToFirst();
+        do {
+            names.add(c.getString(0));
+        } while (c.moveToNext());
+        c.close();
+
+        q = "SELECT name FROM object_on_floor WHERE id_floor = '" + id_floor + "' AND id_type_object = 4 ORDER BY id";
         c = myDataBase.rawQuery(q, null);
         c.moveToFirst();
         do {

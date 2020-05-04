@@ -29,7 +29,7 @@ public class MarkLayer extends MapBaseLayer {
     private MarkIsClickListener listener;
 
     private Bitmap bmpMark, bmpMarkTouch;
-    private  Bitmap bmpStairs, bmpCafe, bmpWC, bmpWard, bmpPrint, bmpTerm, bmpShop;
+    private  Bitmap bmpStairs, bmpCafe, bmpWC, bmpWard, bmpPrint, bmpTerm, bmpShop, bmpCross, bmpEnter, bmpBook, bmpAct, bmpDecan;
 
     private float radiusMark;
     private boolean isClickMark = false;
@@ -62,6 +62,11 @@ public class MarkLayer extends MapBaseLayer {
         bmpPrint = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.bmpprint);
         bmpTerm = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.bmpterm);
         bmpShop = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.bmpshop);
+        bmpCross = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.bmpcross);
+        bmpEnter = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.bmpenter);
+        bmpBook = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.bmpbook);
+        bmpAct = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.bmpact);
+        bmpDecan = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.bmpdecan);
 
         paint = new Paint();
         paint.setAntiAlias(true);
@@ -105,9 +110,9 @@ public class MarkLayer extends MapBaseLayer {
                     PointF mark = marks.get(i);
                     float[] goal = {mark.x, mark.y};
                     currentMatrix.mapPoints(goal);
-                    paint.setColor(Color.RED);
+                    paint.setColor(Color.parseColor("#00008B"));
                     paint.setTextSize(radiusMark);
-                    paint.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL));
+                    paint.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.BOLD));
                     //mark name
                     if (mapView.getCurrentZoom() > 0.5 && marksName != null
                             && marksName.size() == marks.size()) {
@@ -147,6 +152,26 @@ public class MarkLayer extends MapBaseLayer {
                         case 8:
                             canvas.drawBitmap(bmpShop, goal[0] - bmpShop.getWidth() / 2,
                                     goal[1] - bmpShop.getHeight() / 2, paint);
+                            break;
+                        case 9:
+                            canvas.drawBitmap(bmpEnter, goal[0] - bmpEnter.getWidth() / 2,
+                                    goal[1] - bmpEnter.getHeight() / 2, paint);
+                            break;
+                        case 10:
+                            canvas.drawBitmap(bmpCross, goal[0] - bmpCross.getWidth() / 2,
+                                    goal[1] - bmpCross.getHeight() / 2, paint);
+                            break;
+                        case 11:
+                            canvas.drawBitmap(bmpBook, goal[0] - bmpBook.getWidth() / 2,
+                                    goal[1] - bmpBook.getHeight() / 2, paint);
+                            break;
+                        case 12:
+                            canvas.drawBitmap(bmpAct, goal[0] - bmpAct.getWidth() / 2,
+                                    goal[1] - bmpAct.getHeight() / 2, paint);
+                            break;
+                        case 13:
+                            canvas.drawBitmap(bmpDecan, goal[0] - bmpDecan.getWidth() / 2,
+                                    goal[1] - bmpDecan.getHeight() / 2, paint);
                             break;
                     }
 

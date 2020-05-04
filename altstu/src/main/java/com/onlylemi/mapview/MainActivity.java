@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        this.setTitle("Карта АлтГТУ (Главный корпус)");
+
         //подключаемся к базе
         myDbHelper = new DataBaseHelper(this);
         try {
