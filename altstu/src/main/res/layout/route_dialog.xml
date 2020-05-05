@@ -14,12 +14,13 @@
         android:text="Откуда: "
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/inputFrom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:text="">
         <requestFocus />
-    </EditText>
+    </AutoCompleteTextView>
 
     <TextView
         android:id="@+id/tvTo"
@@ -28,11 +29,11 @@
         android:text="Куда: "
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/inputTo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-        <requestFocus />
-    </EditText>
+        android:layout_height="wrap_content"
+        android:text="">
+    </AutoCompleteTextView>
 
 </LinearLayout>

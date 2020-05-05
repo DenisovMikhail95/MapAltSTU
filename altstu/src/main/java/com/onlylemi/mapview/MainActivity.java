@@ -2,35 +2,33 @@ package com.onlylemi.mapview;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.PointF;
-import android.graphics.drawable.Drawable;
-import android.support.v7.app.ActionBar;
+import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.onlylemi.mapview.library.MapView;
 import com.onlylemi.mapview.library.layer.MapBaseLayer;
 import com.onlylemi.mapview.library.layer.MarkLayer;
@@ -38,7 +36,6 @@ import com.onlylemi.mapview.library.layer.RouteLayer;
 import com.onlylemi.mapview.library.utils.MapUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -257,8 +254,19 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         //Настраиваем prompt.xml для нашего AlertDialog:
         mDialogBuilder.setView(promptsView);
         //Настраиваем отображение поля для ввода текста в открытом диалоге:
-        final EditText userInputFrom = (EditText) promptsView.findViewById(R.id.inputFrom);
-        final EditText userInputTo = (EditText) promptsView.findViewById(R.id.inputTo);
+        //final EditText userInputFrom = (EditText) promptsView.findViewById(R.id.inputFrom);
+        List<String> list_for_sugg = new ArrayList<String>();
+        list_for_sugg.addAll(myDbHelper.getMarksName(cur_building,"1"));
+        list_for_sugg.addAll(myDbHelper.getMarksName(cur_building,"2"));
+        list_for_sugg.addAll(myDbHelper.getMarksName(cur_building,"3"));
+        list_for_sugg.addAll(myDbHelper.getMarksName(cur_building,"4"));
+        list_for_sugg.addAll(myDbHelper.getMarksName(cur_building,"5"));
+        final AutoCompleteTextView userInputFrom = (AutoCompleteTextView) promptsView.findViewById(R.id.inputFrom);
+        final AutoCompleteTextView userInputTo = (AutoCompleteTextView) promptsView.findViewById(R.id.inputTo);
+        userInputFrom.setAdapter(new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, list_for_sugg));
+        userInputTo.setAdapter(new ArrayAdapter<>(this,
+                android.R.layout.simple_dropdown_item_1line, list_for_sugg));
         if(flag_route) {
             userInputFrom.setText(roomFrom);
             userInputTo.setText(roomTo);
@@ -386,10 +394,36 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     //создание меню в actionbar, содержащее строку поиска
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        /*
         getMenuInflater().inflate(R.menu.search_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(this);
+        */
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.search_menu, menu);
+        MenuItem searchMenu = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenu);
+        final SearchView.SearchAutoComplete searchAutoComplete = (SearchView.SearchAutoComplete)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchAutoComplete.setDropDownBackgroundResource(android.R.color.holo_blue_light);
+        List<String> list_for_sugg = new ArrayList<String>();
+        list_for_sugg.addAll(myDbHelper.getMarksName(cur_building,"1"));
+        list_for_sugg.addAll(myDbHelper.getMarksName(cur_building,"2"));
+        list_for_sugg.addAll(myDbHelper.getMarksName(cur_building,"3"));
+        list_for_sugg.addAll(myDbHelper.getMarksName(cur_building,"4"));
+        list_for_sugg.addAll(myDbHelper.getMarksName(cur_building,"5"));
+        ArrayAdapter<String> newsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, list_for_sugg);
+        searchAutoComplete.setAdapter(newsAdapter);
+        // Listen to search view item on click event.
+        searchAutoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int itemIndex, long id) {
+                String queryString=(String)adapterView.getItemAtPosition(itemIndex);
+                searchAutoComplete.setText("" + queryString);
+            }
+        });
+        searchView.setOnQueryTextListener(this);
+
         menu.add("Главный корпус (ГК)");
         menu.add("Корпус Д");
         menu.add("Корпус Г");
@@ -552,4 +586,5 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 break;
         }
     }
+
 }
