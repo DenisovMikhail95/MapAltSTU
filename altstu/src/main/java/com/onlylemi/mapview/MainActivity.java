@@ -3,10 +3,12 @@ package com.onlylemi.mapview;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
@@ -111,6 +113,23 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 startActivityForResult(new Intent(getApplicationContext(),ScanCodeActivity.class),1);
             }
         });
+        butScan.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        v.getBackground().setColorFilter(0xe0ffffff, PorterDuff.Mode.SRC_ATOP);
+                        v.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        v.getBackground().clearColorFilter();
+                        v.invalidate();
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
 
         butRes = findViewById(R.id.butRes);
         //слушатель для кнопки reset
@@ -141,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                             else
                                 Toast.makeText(getApplicationContext(), "ПОЛЬЗОВАТЕЛЬСКИЙ РЕЖИМ", Toast.LENGTH_SHORT).show();
                         }
+                        break;
                 }
                 return true;
             }
@@ -605,15 +625,19 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     //событие при закрытие активити сканера
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // если пришло ОК
-        String[] subStr;
-        String delimeter = " ";
-        subStr = scan_str.split(delimeter);
-
-        switchFloor(Integer.valueOf(subStr[1])); //переключаем этаж
-        mapView.mapCenterWithPoint(Integer.valueOf(subStr[2]), Integer.valueOf(subStr[3])); //центруемся на точку
-        mapView.setCurrentZoom(1.3f); //устанавливаем зум
-
+        try{
+            String[] subStr;
+            String delimeter = " ";
+            subStr = scan_str.split(delimeter);
+            switchFloor(Integer.valueOf(subStr[1])); //переключаем этаж
+            mapView.mapCenterWithPoint(Integer.valueOf(subStr[2]), Integer.valueOf(subStr[3])); //центруемся на точку
+            mapView.setCurrentZoom(0.9f); //устанавливаем зум
+            markLayer.setLocation(Integer.valueOf(subStr[2]), Integer.valueOf(subStr[3]));
+            mapView.refresh();
+        }
+        catch (Exception e){
+            Toast.makeText(getApplicationContext(), "Не удалось распознать QR-код", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

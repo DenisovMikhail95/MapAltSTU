@@ -28,7 +28,7 @@ public class MarkLayer extends MapBaseLayer {
     private List<Integer> marksType;
     private MarkIsClickListener listener;
 
-    private Bitmap bmpMark, bmpMarkTouch;
+    private Bitmap bmpMark, bmpMarkTouch, bmpFlag;
     private  Bitmap bmpStairs, bmpCafe, bmpWC, bmpWard, bmpPrint, bmpTerm, bmpShop, bmpCross, bmpEnter, bmpBook, bmpAct, bmpDecan;
 
     private float radiusMark;
@@ -36,6 +36,9 @@ public class MarkLayer extends MapBaseLayer {
     private int num = -1;
 
     private Paint paint;
+
+    private float locate_x,locate_y;
+    private boolean isLocate = false;
 
     public MarkLayer(MapView mapView) {
         this(mapView, null, null,null);
@@ -67,6 +70,7 @@ public class MarkLayer extends MapBaseLayer {
         bmpBook = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.bmpbook);
         bmpAct = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.bmpact);
         bmpDecan = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.bmpdecan);
+        bmpFlag = BitmapFactory.decodeResource(mapView.getResources(), R.mipmap.flag);
 
         paint = new Paint();
         paint.setAntiAlias(true);
@@ -181,8 +185,30 @@ public class MarkLayer extends MapBaseLayer {
                     }
                 }
             }
+
+            if (isLocate){
+                float[] goal = {locate_x, locate_y};
+                currentMatrix.mapPoints(goal);
+                paint.setColor(Color.BLACK);
+                paint.setTextSize(radiusMark);
+                paint.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.BOLD));
+                canvas.drawText("ВЫ", goal[0] - radiusMark, goal[1] -
+                        radiusMark*2, paint);
+                canvas.drawBitmap(bmpFlag, goal[0] - bmpFlag.getWidth() / 2,
+                        goal[1] - bmpFlag.getHeight(), paint);
+            }
             canvas.restore();
         }
+    }
+
+    public void setLocation(float x, float y){
+        locate_x = x;
+        locate_y = y;
+        isLocate = true;
+    }
+
+    public void setLocation(){
+        isLocate = false;
     }
 
     public int getNum() {

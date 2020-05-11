@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.onlylemi.mapview">
 
     <uses-permission android:name="android.permission.CAMERA" />
@@ -11,13 +12,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".ScanCodeActivity"
-            android:label="Оперделить местоположение">
+            android:screenOrientation="portrait"
+            android:label="Оперделить местоположение"
+            tools:ignore="LockedOrientationActivity">
             ></activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/head_name">
+            android:screenOrientation="portrait"
+            android:label="@string/head_name"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
