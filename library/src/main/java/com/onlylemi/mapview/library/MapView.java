@@ -161,35 +161,6 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
     public void loadMap(final Picture picture) {
         isMapLoadFinish = false;
 
-        /*
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (picture != null) {
-                    if (mapLayer == null) {
-                        mapLayer = new MapLayer(MapView.this);
-                        // add map image layer
-                        layers.add(mapLayer);
-                    }
-                    mapLayer.setImage(picture);
-                    if (mapViewListener != null) {
-                        // load map success, and callback
-                        mapViewListener.onMapLoadSuccess();
-                    }
-                    isMapLoadFinish = true;
-                    refresh();
-                } else {
-                    if (mapViewListener != null) {
-                        mapViewListener.onMapLoadFail();
-                    }
-                }
-            }
-        }).start();
-
-         */
-
-
-
         if (picture != null) {
             if (mapLayer == null) {
                 mapLayer = new MapLayer(MapView.this);
@@ -207,8 +178,6 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
                 mapViewListener.onMapLoadFail();
             }
         }
-
-
     }
 
     @Override

@@ -14,7 +14,7 @@ import com.onlylemi.mapview.library.MapView;
  *
  * @author: onlylemi
  */
-public class MapLayer extends MapBaseLayer {
+public class MapLayer extends MapBaseLayer  {
 
     private static final String TAG = "MapLayer";
 

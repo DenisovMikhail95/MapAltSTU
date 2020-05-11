@@ -2,6 +2,7 @@ package com.onlylemi.mapview;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -11,6 +12,8 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -40,13 +43,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener  {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private MapView mapView; //слой карты (изображения)
     private MarkLayer markLayer; //слой меток
     private RouteLayer routeLayer; //слой взаимосвязанных узлов, для прокладки маршрута
     private Button but1, but2, but3, but4, but5; // кнопки этажи
-    private  ImageButton butRoute, butRes; //кнопка проложить маршрут и сбросить
+    private  ImageButton butRoute, butRes, butScan; //кнопка проложить маршрут и сбросить
     private TextView tvRoute;
     private String image_name = "map1.png"; //имя файла для отображения
 
@@ -63,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     boolean DeveloperMode = false;
 
     DataBaseHelper myDbHelper;
+
+    public static String scan_str;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -88,7 +93,25 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         but3 = (Button) findViewById(R.id.butFloor3); but3.setOnClickListener(oclBtn);
         but4 = (Button) findViewById(R.id.butFloor4); but4.setOnClickListener(oclBtn);
         but5 = (Button) findViewById(R.id.butFloor5); but5.setOnClickListener(oclBtn);
-        butRoute = findViewById(R.id.butRoute); butRoute.setOnClickListener(oclBtnRoute);
+
+        butRoute = findViewById(R.id.butRoute);
+        //слушатель для кнопки маршрута
+        butRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadRouteDialog(); //вызов диалога для ввода начала и конца маршрута
+            }
+        });
+
+        butScan = findViewById(R.id.btn_scan);
+        //слушатель кнопки запуска сканера
+        butScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(getApplicationContext(),ScanCodeActivity.class),1);
+            }
+        });
+
         butRes = findViewById(R.id.butRes);
         //слушатель для кнопки reset
         butRes.setOnTouchListener(new View.OnTouchListener(){
@@ -125,14 +148,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         tvRoute = findViewById(R.id.tvRoute);
         reloadMap();
     }
-
-    //слушатель кнопки маршрута
-    View.OnClickListener oclBtnRoute = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            loadRouteDialog(); //вызываем диалог для ввода начала и конца маршрута
-        }
-    };
 
     //слушатель кнопок этажей
     View.OnClickListener oclBtn = new View.OnClickListener() {
@@ -585,6 +600,20 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 but5.performClick();
                 break;
         }
+    }
+
+    //событие при закрытие активити сканера
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // если пришло ОК
+        String[] subStr;
+        String delimeter = " ";
+        subStr = scan_str.split(delimeter);
+
+        switchFloor(Integer.valueOf(subStr[1])); //переключаем этаж
+        mapView.mapCenterWithPoint(Integer.valueOf(subStr[2]), Integer.valueOf(subStr[3])); //центруемся на точку
+        mapView.setCurrentZoom(1.3f); //устанавливаем зум
+
     }
 
 }

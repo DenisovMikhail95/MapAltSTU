@@ -52,13 +52,6 @@
             android:layout_height="wrap_content"
             android:text="5"
             style="@style/Widget.AppCompat.Button.Colored" />
-        <Spinner
-            android:id="@+id/spinType"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:drawSelectorOnTop="true"
-            android:paddingBottom="20dp">
-        </Spinner>
     </LinearLayout>
 
     <ImageButton
@@ -85,7 +78,8 @@
         android:layout_marginBottom="10dp"
         android:layout_toEndOf="@+id/butRoute"
         android:layout_toRightOf="@+id/butRoute"
-        app:srcCompat="@android:drawable/ic_delete" />
+        app:srcCompat="@android:drawable/ic_delete"
+        />
 
     <TextView
         android:id="@+id/tvRoute"
@@ -99,5 +93,20 @@
         android:layout_toRightOf="@+id/butRes"
         android:lines="2"
         android:textSize="17sp"/>
+
+
+    <ImageButton
+        android:id="@+id/btn_scan"
+        style="@android:style/Widget.DeviceDefault.ImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@mipmap/qr"
+        />
 
 </RelativeLayout>
