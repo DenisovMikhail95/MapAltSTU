@@ -23,21 +23,18 @@ import com.onlylemi.mapview.library.utils.MapUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * MapView
- */
 public class MapView extends SurfaceView implements SurfaceHolder.Callback {
 
     private static final String TAG = "MapView";
-    private static final int TOUCH_STATE_NO = 0; // no touch
-    private static final int TOUCH_STATE_SCROLL = 1; // scroll(one point)
-    private static final int TOUCH_STATE_SCALE = 2; // scale(two points)
-    private static final int TOUCH_STATE_ROTATE = 3; // rotate(two points)
-    private static final int TOUCH_STATE_TWO_POINTED = 4; // two points touch
+    private static final int TOUCH_STATE_NO = 0;
+    private static final int TOUCH_STATE_SCROLL = 1;
+    private static final int TOUCH_STATE_SCALE = 2;
+    private static final int TOUCH_STATE_ROTATE = 3;
+    private static final int TOUCH_STATE_TWO_POINTED = 4;
     private SurfaceHolder holder;
     private MapViewListener mapViewListener = null;
     private boolean isMapLoadFinish = false;
-    private List<MapBaseLayer> layers; // all layers
+    private List<MapBaseLayer> layers;
     private MapLayer mapLayer;
     private float minZoom = 0.1f;
     private float maxZoom = 2.5f;
@@ -50,7 +47,7 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
     private float saveZoom = 0f;
     private float currentRotateDegrees = 0.0f;
     private float saveRotateDegrees = 0.0f;
-    private int currentTouchState = MapView.TOUCH_STATE_NO; // default touch state
+    private int currentTouchState = MapView.TOUCH_STATE_NO;
 
     private float oldDist = 0, oldDegree = 0;
     private boolean isScaleAndRotateTogether = true;
@@ -68,9 +65,6 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
         initMapView();
     }
 
-    /**
-     * init mapview
-     */
     private void initMapView() {
         getHolder().addCallback(this);
 
@@ -112,9 +106,6 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
 
     }
 
-    /**
-     * reload mapview
-     */
     public void refresh() {
         if (holder != null) {
             Canvas canvas = holder.lockCanvas();
@@ -156,23 +147,16 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
         loadMap(MapUtils.getPictureFromBitmap(bitmap));
     }
 
-    /**
-     * load map image
-     *
-     * @param picture
-     */
     public void loadMap(final Picture picture) {
         isMapLoadFinish = false;
 
         if (picture != null) {
             if (mapLayer == null) {
                 mapLayer = new MapLayer(MapView.this);
-                // add map image layer
                 layers.add(mapLayer);
             }
             mapLayer.setImage(picture);
             if (mapViewListener != null) {
-                // load map success, and callback
                 mapViewListener.onMapLoadSuccess();
             }
             isMapLoadFinish = true;
@@ -214,8 +198,6 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
                 break;
             case MotionEvent.ACTION_UP:
                 if (withFloorPlan(event.getX(), event.getY())) {
-//                    Log.i(TAG, event.getX() + " " + event.getY());
-                    // layers on touch
                     for (MapBaseLayer layer : layers) {
                         layer.onTouch(event);
                     }
@@ -309,22 +291,10 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
         return true;
     }
 
-    /**
-     * set mapview listener
-     *
-     * @param mapViewListener
-     */
     public void setMapViewListener(MapViewListener mapViewListener) {
         this.mapViewListener = mapViewListener;
     }
 
-    /**
-     * convert coordinate of map to coordinate of screen
-     *
-     * @param x
-     * @param y
-     * @return
-     */
     public float[] convertMapXYToScreenXY(float x, float y) {
         Matrix invertMatrix = new Matrix();
         float[] value = {x, y};
@@ -333,31 +303,18 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
         return value;
     }
 
-    /**
-     * map is/not load finish
-     *
-     * @return
-     */
+
     public boolean isMapLoadFinish() {
         return isMapLoadFinish;
     }
 
-    /**
-     * add layer
-     *
-     * @param layer
-     */
     public void addLayer(MapBaseLayer layer) {
         if (layer != null) {
             layers.add(layer);
         }
     }
 
-    /**
-     * get all layers
-     *
-     * @return
-     */
+
     public List<MapBaseLayer> getLayers() {
         return layers;
     }
@@ -366,12 +323,6 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
         currentMatrix.postTranslate(x, y);
     }
 
-    /**
-     * set point to map center
-     *
-     * @param x
-     * @param y
-     */
     public void mapCenterWithPoint(float x, float y) {
         float[] goal = {x, y};
         currentMatrix.mapPoints(goal);
@@ -385,11 +336,6 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
         return currentRotateDegrees;
     }
 
-    /**
-     * set rotate degrees
-     *
-     * @param degrees
-     */
     public void setCurrentRotateDegrees(float degrees) {
         mapCenterWithPoint(getMapWidth() / 2, getMapHeight() / 2);
         setCurrentRotateDegrees(degrees, getWidth() / 2, getHeight() / 2);
@@ -399,14 +345,6 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
         currentRotateDegrees = degrees;
     }
 
-
-    /**
-     * set rotate degrees
-     *
-     * @param degrees
-     * @param x
-     * @param y
-     */
     public void setCurrentRotateDegrees(float degrees, float x, float y) {
         currentMatrix.postRotate(degrees - currentRotateDegrees, x, y);
 
@@ -430,11 +368,6 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
         return isScaleAndRotateTogether;
     }
 
-    /**
-     * setting scale&rotate is/not together on touch
-     *
-     * @param scaleAndRotateTogether
-     */
     public void setScaleAndRotateTogether(boolean scaleAndRotateTogether) {
         isScaleAndRotateTogether = scaleAndRotateTogether;
     }
@@ -466,13 +399,6 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
                 , mid.x, mid.y);
     }
 
-    /**
-     * point is/not in floor plan
-     *
-     * @param x
-     * @param y
-     * @return
-     */
     public boolean withFloorPlan(float x, float y) {
         float[] goal = convertMapXYToScreenXY(x, y);
         return goal[0] > 0 && goal[0] < mapLayer.getImage().getWidth() && goal[1] > 0

@@ -9,11 +9,6 @@ import android.view.ViewTreeObserver;
 
 import com.onlylemi.mapview.library.MapView;
 
-/**
- * MapLayer
- *
- * @author: onlylemi
- */
 public class MapLayer extends MapBaseLayer  {
 
     private static final String TAG = "MapLayer";
@@ -45,10 +40,6 @@ public class MapLayer extends MapBaseLayer  {
         }
     }
 
-
-    /**
-     * init map image layer
-     */
     private void initMapLayer() {
         float zoom = getInitZoom(mapView.getWidth(), mapView.getHeight(), image.getWidth(), image
                 .getHeight());
@@ -61,15 +52,6 @@ public class MapLayer extends MapBaseLayer  {
         mapView.translate(width / 2, height / 2);
     }
 
-    /**
-     * calculate init zoom
-     *
-     * @param viewWidth
-     * @param viewHeight
-     * @param imageWidth
-     * @param imageHeight
-     * @return
-     */
     private float getInitZoom(float viewWidth, float viewHeight, float imageWidth,
                               float imageHeight) {
         float widthRatio = viewWidth / imageWidth;

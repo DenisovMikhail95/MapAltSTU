@@ -3,38 +3,33 @@ package com.onlylemi.mapview.library.utils.math;
 import java.util.Arrays;
 import java.util.Random;
 
-/**
- * GeneticAlgorithm
- *
- * @author: onlylemi
- */
 public class GeneticAlgorithm {
 
-    private static final float DEFAULT_CROSSOVER_PROBABILITY = 0.9f; // 默认交叉概率
-    private static final float DEFAULT_MUTATION_PROBABILITY = 0.01f; // 默认突变概率
-    private static final int DEFAULT_POPULATION_SIZE = 30; // 默认种群数量
+    private static final float DEFAULT_CROSSOVER_PROBABILITY = 0.9f;
+    private static final float DEFAULT_MUTATION_PROBABILITY = 0.01f;
+    private static final int DEFAULT_POPULATION_SIZE = 30;
     private static final int PREVIOUS = 0;
     private static final int NEXT = 1;
 
-    private float crossoverProbability = DEFAULT_CROSSOVER_PROBABILITY; // 交叉概率
-    private float mutationProbability = DEFAULT_MUTATION_PROBABILITY; // 突变概率
+    private float crossoverProbability = DEFAULT_CROSSOVER_PROBABILITY;
+    private float mutationProbability = DEFAULT_MUTATION_PROBABILITY;
 
-    private int populationSize = DEFAULT_POPULATION_SIZE; // 种群数量
-    private int mutationTimes = 0; // 变异次数
-    private int currentGeneration = 0; // 当前的一代
+    private int populationSize = DEFAULT_POPULATION_SIZE;
+    private int mutationTimes = 0;
+    private int currentGeneration = 0;
 
-    private int maxGeneration = 1000; // 最大代数
+    private int maxGeneration = 1000;
     private int pointNum;
-    private int[][] population; // 种群集
+    private int[][] population;
 
-    private float[][] dist; // 点集间的邻接矩阵
-    private int[] bestIndivial; // 最短的结果集
-    private float bestDist; // 最短的距离
-    private int currentBestPosition; // 当前最好个体的位置
+    private float[][] dist;
+    private int[] bestIndivial;
+    private float bestDist;
+    private int currentBestPosition;
 
-    private float currentBestDist; // 当前最好个体的距离
-    private float[] values; // 种群中每个个体的dist
-    private float[] fitnessValues; // 适应度集
+    private float currentBestDist;
+    private float[] values;
+    private float[] fitnessValues;
 
     private float[] roulette;
 
@@ -50,12 +45,6 @@ public class GeneticAlgorithm {
         private static GeneticAlgorithm instance = new GeneticAlgorithm();
     }
 
-    /**
-     * 点集间的邻接矩阵
-     *
-     * @param matrix
-     * @return
-     */
     public int[] tsp(float[][] matrix) {
         this.dist = matrix;
         pointNum = matrix.length;
@@ -72,9 +61,6 @@ public class GeneticAlgorithm {
         return getBestIndivial();
     }
 
-    /**
-     * 初始化
-     */
     private void init() {
         mutationTimes = 0;
         currentGeneration = 0;
@@ -88,43 +74,36 @@ public class GeneticAlgorithm {
         roulette = new float[populationSize];
         population = new int[populationSize][pointNum];
 
-        //initDist(points);
-        // 父代
         for (int i = 0; i < populationSize; i++) {
             population[i] = randomIndivial(pointNum);
         }
         evaluateBestIndivial();
     }
 
-    /**
-     * 下一代
-     */
     public int[] nextGeneration() {
         currentGeneration++;
 
-        // 选择
+
         selection();
-        // 交叉
+
         crossover();
-        // 变异
+
         mutation();
-        // 评价最好
+
         evaluateBestIndivial();
 
         return getBestIndivial();
     }
 
-    /**
-     * 选择
-     */
+
     private void selection() {
         int[][] parents = new int[populationSize][pointNum];
 
         int initnum = 4;
-        parents[0] = population[currentBestPosition]; // 当前种群中最好的个体
-        parents[1] = exchangeMutate(bestIndivial.clone()); // 对最好的个体进行交换变异
-        parents[2] = insertMutate(bestIndivial.clone()); // 对最好的个体进行插入变异
-        parents[3] = bestIndivial.clone(); // 所有代中最好的个体
+        parents[0] = population[currentBestPosition];
+        parents[1] = exchangeMutate(bestIndivial.clone());
+        parents[2] = insertMutate(bestIndivial.clone());
+        parents[3] = bestIndivial.clone();
 
         setRoulette();
         for (int i = initnum; i < populationSize; i++) {
@@ -139,7 +118,7 @@ public class GeneticAlgorithm {
     private void setRoulette() {
         //calculate all the fitness
         for (int i = 0; i < values.length; i++) {
-            fitnessValues[i] = 1.0f / values[i]; // 适应度为路径长的导数
+            fitnessValues[i] = 1.0f / values[i];
         }
 
         //set the roulette
@@ -155,12 +134,6 @@ public class GeneticAlgorithm {
         }
     }
 
-    /**
-     * 模拟转盘，进行子代选取
-     *
-     * @param ran
-     * @return
-     */
     private int wheelOut(int ran) {
         for (int i = 0; i < roulette.length; i++) {
             if (ran <= roulette[i]) {
@@ -170,13 +143,6 @@ public class GeneticAlgorithm {
         return 0;
     }
 
-
-    /**
-     * 交换变异
-     *
-     * @param seq
-     * @return
-     */
     private int[] exchangeMutate(int[] seq) {
         mutationTimes++;
         int m, n;
@@ -194,12 +160,6 @@ public class GeneticAlgorithm {
         return seq;
     }
 
-    /**
-     * 插入变异
-     *
-     * @param seq
-     * @return
-     */
     private int[] insertMutate(int[] seq) {
         mutationTimes++;
         int m, n;
@@ -220,9 +180,6 @@ public class GeneticAlgorithm {
         return seq;
     }
 
-    /**
-     * 交叉
-     */
     private void crossover() {
         int[] queue = new int[populationSize];
         int num = 0;
@@ -244,14 +201,7 @@ public class GeneticAlgorithm {
         population[y] = getChild(x, y, NEXT);
     }
 
-    /**
-     * 根据父代求子代
-     *
-     * @param x
-     * @param y
-     * @param pos
-     * @return
-     */
+
     private int[] getChild(int x, int y, int pos) {
         int[] solution = new int[pointNum];
         int[] px = population[x].clone();
@@ -289,9 +239,6 @@ public class GeneticAlgorithm {
         return solution;
     }
 
-    /**
-     * 变异
-     */
     private void mutation() {
         for (int i = 0; i < populationSize; i++) {
             if (Math.random() < mutationProbability) {
@@ -305,9 +252,6 @@ public class GeneticAlgorithm {
         }
     }
 
-    /**
-     * 评估最好的个体
-     */
     private void evaluateBestIndivial() {
         for (int i = 0; i < population.length; i++) {
             values[i] = calculateIndivialDist(population[i]);
@@ -319,11 +263,6 @@ public class GeneticAlgorithm {
         }
     }
 
-    /**
-     * 计算个体的距离
-     *
-     * @return
-     */
     private float calculateIndivialDist(int[] indivial) {
         float sum = dist[indivial[0]][indivial[indivial.length - 1]];
         for (int i = 1; i < indivial.length; i++) {
@@ -332,9 +271,6 @@ public class GeneticAlgorithm {
         return sum;
     }
 
-    /**
-     * 评估得到最短距离
-     */
     public void evaluateBestCurrentDist() {
         currentBestDist = values[0];
         for (int i = 1; i < populationSize; i++) {
@@ -345,13 +281,6 @@ public class GeneticAlgorithm {
         }
     }
 
-
-    /**
-     * 产生个体（乱序）
-     *
-     * @param n
-     * @return
-     */
     private int[] randomIndivial(int n) {
         int[] a = new int[n];
         for (int i = 0; i < n; i++) {
@@ -361,12 +290,6 @@ public class GeneticAlgorithm {
         return shuffle(a);
     }
 
-    /**
-     * 乱序处理
-     *
-     * @param a
-     * @return
-     */
     private int[] shuffle(int[] a) {
         for (int i = 0; i < a.length; i++) {
             int p = random(a.length);

@@ -3,11 +3,6 @@ package com.onlylemi.mapview.library.utils.math;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * FloydAlgorithm
- *
- * @author: onlylemi
- */
 public final class FloydAlgorithm {
 
     private static final int INF = Integer.MAX_VALUE;
@@ -34,13 +29,6 @@ public final class FloydAlgorithm {
         this.path = new int[matrix.length][matrix.length];
     }
 
-    /**
-     * the shortest between begin to end
-     *
-     * @param begin
-     * @param end
-     * @param matrix
-     */
     public List<Integer> findCheapestPath(int begin, int end, float[][] matrix) {
         init(matrix);
 
@@ -63,7 +51,6 @@ public final class FloydAlgorithm {
 
     private void floyd(float[][] matrix) {
         int size = matrix.length;
-        // initialize dist and path
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 path[i][j] = -1;

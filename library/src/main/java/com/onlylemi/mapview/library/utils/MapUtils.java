@@ -10,11 +10,6 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * MapUtils
- *
- * @author onlylemi
- */
 public final class MapUtils {
 
     private static final String TAG = "MapUtils: ";
@@ -30,13 +25,6 @@ public final class MapUtils {
         nodesContactSize = nodescontactsize;
     }
 
-    /**
-     * Get the distance between points
-     *
-     * @param nodes
-     * @param list
-     * @return
-     */
     public static float getDistanceBetweenList(List<PointF> nodes,
                                                List<Integer> list) {
         float distance = 0;
@@ -47,13 +35,6 @@ public final class MapUtils {
         return distance;
     }
 
-    /**
-     * get degrees between two points(list) with horizontal plane
-     *
-     * @param routeList
-     * @param nodes
-     * @return
-     */
     public static List<Float> getDegreeBetweenTwoPointsWithHorizontal(List<Integer> routeList,
                                                                       List<PointF> nodes) {
         List<Float> routeListDegrees = new ArrayList<>();
@@ -65,13 +46,6 @@ public final class MapUtils {
         return routeListDegrees;
     }
 
-    /**
-     * get degrees between two points(list) with vertical plane
-     *
-     * @param routeList
-     * @param nodes
-     * @return
-     */
     public static List<Float> getDegreeBetweenTwoPointsWithVertical(List<Integer> routeList,
                                                                     List<PointF> nodes) {
         List<Float> routeListDegrees = new ArrayList<>();
@@ -83,15 +57,6 @@ public final class MapUtils {
         return routeListDegrees;
     }
 
-    /**
-     * get shortest path between two points
-     *
-     * @param start        start point
-     * @param end          end point
-     * @param nodes        nodes list
-     * @param nodesContact nodesContact list
-     * @return
-     */
     public static List<Integer> getShortestPathBetweenTwoPoints(int start,
                                                                 int end, List<PointF> nodes,
                                                                 List<PointF> nodesContact) {
@@ -100,14 +65,6 @@ public final class MapUtils {
         return MapMath.getShortestPathBetweenTwoPoints(start, end, matrix);
     }
 
-    /**
-     * get best path between points
-     *
-     * @param points
-     * @param nodes
-     * @param nodesContact
-     * @return
-     */
     public static List<Integer> getBestPathBetweenPoints(int[] points, List<PointF> nodes,
                                                          List<PointF> nodesContact) {
         // adjacency matrix
@@ -125,7 +82,6 @@ public final class MapUtils {
             }
         }
 
-        // TSP to get best path
         List<Integer> routeList = new ArrayList<>();
         List<Integer> result = MapMath.getBestPathBetweenPointsByGeneticAlgorithm(matrix);
         for (int i = 0; i < result.size() - 1; i++) {
@@ -140,15 +96,6 @@ public final class MapUtils {
         return routeList;
     }
 
-
-    /**
-     * get best path between points
-     *
-     * @param pointList
-     * @param nodes
-     * @param nodesContact
-     * @return
-     */
     public static List<Integer> getBestPathBetweenPoints(List<PointF> pointList,
                                                          List<PointF> nodes, List<PointF>
                                                                  nodesContact) {
@@ -163,7 +110,6 @@ public final class MapUtils {
             }
         }
 
-        //find the point on the nearest route
         int[] points = new int[pointList.size()];
         for (int i = 0; i < pointList.size(); i++) {
             addPointToList(pointList.get(i), nodes, nodesContact);
@@ -173,15 +119,6 @@ public final class MapUtils {
         return getBestPathBetweenPoints(points, nodes, nodesContact);
     }
 
-    /**
-     * get shortest distance between two points
-     *
-     * @param start
-     * @param end
-     * @param nodes
-     * @param nodesContact
-     * @return
-     */
     public static float getShortestDistanceBetweenTwoPoints(int start, int end,
                                                             List<PointF> nodes, List<PointF>
                                                                     nodesContact) {
@@ -190,16 +127,8 @@ public final class MapUtils {
         return getDistanceBetweenList(nodes, list);
     }
 
-    /**
-     * adjacency matrix with points
-     *
-     * @param nodes
-     * @param nodesContact
-     * @return
-     */
     public static float[][] getMatrixBetweenFloorPlanNodes(List<PointF> nodes, List<PointF>
             nodesContact) {
-        // set default is INF
         float[][] matrix = new float[nodes.size()][nodes.size()];
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[i].length; j++) {
@@ -207,7 +136,6 @@ public final class MapUtils {
             }
         }
 
-        // set value for matrix
         for (int i = 0; i < nodesContact.size(); i++) {
             matrix[(int) nodesContact.get(i).x][(int) nodesContact.get(i).y] = MapMath
                     .getDistanceBetweenTwoPoints(nodes.get((int) nodesContact.get(i).x),
@@ -221,15 +149,6 @@ public final class MapUtils {
         return matrix;
     }
 
-    /**
-     * get shortest distance between two points
-     *
-     * @param start
-     * @param end
-     * @param nodes
-     * @param nodesContact
-     * @return
-     */
     public static List<Integer> getShortestDistanceBetweenTwoPoints(PointF start, PointF end,
                                                                     List<PointF> nodes,
                                                                     List<PointF> nodesContact) {
@@ -251,15 +170,6 @@ public final class MapUtils {
                 nodesContact);
     }
 
-    /**
-     * get the shortest path from the position point to the target point in the map
-     *
-     * @param position
-     * @param target
-     * @param nodes
-     * @param nodesContact
-     * @return
-     */
     public static List<Integer> getShortestDistanceBetweenTwoPoints(PointF position, int target,
                                                                     List<PointF> nodes,
                                                                     List<PointF> nodesContact) {
@@ -292,13 +202,6 @@ public final class MapUtils {
         }
     }
 
-    /**
-     * add point to list
-     *
-     * @param point
-     * @param nodes
-     * @param nodesContact
-     */
     private static void addPointToList(PointF point, List<PointF> nodes, List<PointF>
             nodesContact) {
         if (point != null) {
@@ -318,20 +221,12 @@ public final class MapUtils {
                     }
                 }
             }
-            // get intersection
             nodes.add(pV);
-            //Log.i(TAG, "node=" + (nodes.size() - 1) + ", po1=" + po1 + ", po2=" + po2);
             nodesContact.add(new PointF(po1, nodes.size() - 1));
             nodesContact.add(new PointF(po2, nodes.size() - 1));
         }
     }
 
-    /**
-     * bitmap to picture
-     *
-     * @param bitmap
-     * @return
-     */
     public static Picture getPictureFromBitmap(Bitmap bitmap) {
         Picture picture = new Picture();
         Canvas canvas = picture.beginRecording(bitmap.getWidth(),
