@@ -14,11 +14,6 @@ import com.onlylemi.mapview.library.R;
 
 import java.util.List;
 
-/**
- * RouteLayer
- *
- * @author: onlylemi
- */
 public class RouteLayer extends MapBaseLayer {
 
     private List<Integer> routeList; // routes list
@@ -90,8 +85,6 @@ public class RouteLayer extends MapBaseLayer {
                     float[] goal2 = {nodeList.get(routeList.get(i + 1)).x, nodeList.get(routeList.get(i + 1)).y};
                     currentMatrix.mapPoints(goal1);
                     currentMatrix.mapPoints(goal2);
-                    //For test
-                    //paint.setColor(Color.rgb((int) (Math.random() * 255d), (int) (Math.random() * 255d), (int) (Math.random() * 255d)));
                     paint.setColor(Color.RED);
                     paint.setStrokeWidth(routeWidth);
                     canvas.drawLine(goal1[0], goal1[1], goal2[0], goal2[1], paint);
@@ -126,16 +119,6 @@ public class RouteLayer extends MapBaseLayer {
                     canvas.drawBitmap(routeEndBmp,
                             goal2[0] - routeEndBmp.getWidth() / 2, goal2[1]
                                     - routeEndBmp.getHeight(), paint);
-
-                /*
-                canvas.drawBitmap(routeStartBmp,
-                        goal1[0] - routeStartBmp.getWidth() / 2, goal1[1]
-                                - routeStartBmp.getHeight(), paint);
-                canvas.drawBitmap(routeEndBmp,
-                        goal2[0] - routeEndBmp.getWidth() / 2, goal2[1]
-                                - routeEndBmp.getHeight(), paint);
-
-                 */
             }
 
             canvas.restore();

@@ -79,12 +79,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return myDataBase;
     }
 
-    public Cursor getTablecontents(String table) {
-        String q = "SELECT * FROM " + table;
-        Cursor mCursor = myDataBase.rawQuery(q, null);
-        return mCursor;
-    }
-
     @Override
     public synchronized void close() {
         if(myDataBase != null)

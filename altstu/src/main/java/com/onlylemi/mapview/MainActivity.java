@@ -47,7 +47,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
-    private MapView mapView; //слой карты (изображения)
+    private MapView mapView;
     private MarkLayer markLayer; //слой меток
     private RouteLayer routeLayer; //слой взаимосвязанных узлов, для прокладки маршрута
     private Button but1, but2, but3, but4, but5; // кнопки этажи
@@ -55,19 +55,19 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private TextView tvRoute;
     private String image_name = "map1.png"; //имя файла для отображения
 
-    Floor data_floor; //все данные этажа
+    private Floor data_floor; //все данные этажа
 
-    String roomFrom = "", roomTo = ""; //начало, конец маршрута (имя помещения)
-    int indexFrom, indexTo; //индексы помещений
-    int floorFrom, floorTo, cur_floor = 1; //стартовый этаж, конечный, текущий
-    String cur_building = "Главный корпус";
-    int stairs; //лестница в случае перехода между этажами.
+    private String roomFrom = "", roomTo = ""; //начало, конец маршрута (имя помещения)
+    private int indexFrom, indexTo; //индексы помещений
+    private int floorFrom, floorTo, cur_floor = 1; //стартовый этаж, конечный, текущий
+    private String cur_building = "Главный корпус";
+    private int stairs; //лестница в случае перехода между этажами.
     private  boolean flag_route = false; // построен ли маршрут в данный момент
-    List<Integer> routeList;
+    private List<Integer> routeList;
 
-    boolean DeveloperMode = false;
+    private boolean DeveloperMode = false;
 
-    DataBaseHelper myDbHelper;
+    private DataBaseHelper myDbHelper;
 
     public static String scan_str;
 
@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     protected void reloadMap(){
         //получаем наш элемент MapView
         mapView = (MapView) findViewById(R.id.mapview);
-        // сохраняем матрицу смещения, коэфициент зума и поворота. (они сбросятся при загрузке другого этажа)
+        // сохраняем матрицу, зум и поворот. (они сбросятся при загрузке другого этажа)
         Matrix matr = new Matrix(mapView.getCurrentMatrix());
         float zom = mapView.getCurrentZoom();
         float rot = mapView.getCurrentRotateDegrees();
@@ -271,7 +271,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             }
         });
 
-        //воостанавливаем матрицу смещения, коэфициент зума и поворота, чтобы новый этаж был в том же положении, что и старый
+        //воостанавливаем смещения, зум и поворот, чтобы новый этаж был в том же положении, что и старый
         mapView.setCurrentMatrix(matr);
         mapView.setCurrentRotateDegrees2(rot);
         mapView.setCurrentZoom2(zom);
@@ -429,12 +429,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     //создание меню в actionbar, содержащее строку поиска
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        /*
-        getMenuInflater().inflate(R.menu.search_menu, menu);
-        MenuItem searchItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setOnQueryTextListener(this);
-        */
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.search_menu, menu);
         MenuItem searchMenu = menu.findItem(R.id.search);

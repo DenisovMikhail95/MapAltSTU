@@ -16,11 +16,6 @@ import com.onlylemi.mapview.library.R;
 
 import java.util.List;
 
-/**
- * MarkLayer
- *
- * @author: onlylemi
- */
 public class MarkLayer extends MapBaseLayer {
 
     private List<PointF> marks;

@@ -123,12 +123,6 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
-    public void reset () {
-        currentMatrix.reset();
-        currentZoom = 0.1f;
-        currentRotateDegrees = 0.0f;
-    }
-
     public Matrix getCurrentMatrix(){
         return currentMatrix;
     }
@@ -256,8 +250,6 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
                         case MapView.TOUCH_STATE_SCALE:
                             currentMatrix.set(saveMatrix);
                             newDist = distance(event, mid);
-//                            newDegree = rotation(event, mid);
-//                            float rotate = newDegree - oldDegree;
                             float scale = newDist / oldDist;
                             if (scale * saveZoom < minZoom) {
                                 scale = minZoom / saveZoom;
@@ -277,7 +269,6 @@ public class MapView extends SurfaceView implements SurfaceHolder.Callback {
                                     currentRotateDegrees + 360;
                             currentMatrix.postRotate(rotate, mid.x, mid.y);
                             refresh();
-//                        Log.i(TAG, "rotate:" + currentRotateDegrees);
                             break;
                         default:
                             break;

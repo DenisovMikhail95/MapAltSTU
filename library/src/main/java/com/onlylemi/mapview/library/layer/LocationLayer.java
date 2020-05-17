@@ -12,11 +12,6 @@ import android.view.MotionEvent;
 import com.onlylemi.mapview.library.MapView;
 import com.onlylemi.mapview.library.R;
 
-/**
- * LocationLayer
- *
- * @author: onlylemi
- */
 public class LocationLayer extends MapBaseLayer {
 
     private boolean openCompass = false;

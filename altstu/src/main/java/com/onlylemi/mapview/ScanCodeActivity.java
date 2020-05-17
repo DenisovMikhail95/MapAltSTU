@@ -43,13 +43,6 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        ScannerView.setResultHandler(this); // Register ourselves as a handler for scan results.
-        ScannerView.startCamera();          // Start camera on resume
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         ScannerView.stopCamera();           // Stop camera on pause

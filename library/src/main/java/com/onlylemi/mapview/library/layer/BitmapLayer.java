@@ -13,11 +13,6 @@ import com.onlylemi.mapview.library.MapView;
 
 import java.util.Arrays;
 
-/**
- * BitmapLayer
- *
- * @author: onlylemi
- */
 public class BitmapLayer extends MapBaseLayer {
 
     private PointF location;
