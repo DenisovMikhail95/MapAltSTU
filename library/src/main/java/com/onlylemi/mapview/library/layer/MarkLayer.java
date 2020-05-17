@@ -109,15 +109,6 @@ public class MarkLayer extends MapBaseLayer {
                     PointF mark = marks.get(i);
                     float[] goal = {mark.x, mark.y};
                     currentMatrix.mapPoints(goal);
-                    paint.setColor(Color.parseColor("#00008B"));
-                    paint.setTextSize(radiusMark);
-                    paint.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.BOLD));
-                    //mark name
-                    if (mapView.getCurrentZoom() > 0.5 && marksName != null
-                            && marksName.size() == marks.size()) {
-                        canvas.drawText(marksName.get(i), goal[0] - radiusMark, goal[1] -
-                                radiusMark / 2, paint);
-                    }
                     //mark ico
                     switch (marksType.get(i)){
                         case 1:
@@ -172,6 +163,16 @@ public class MarkLayer extends MapBaseLayer {
                             canvas.drawBitmap(bmpDecan, goal[0] - bmpDecan.getWidth() / 2,
                                     goal[1] - bmpDecan.getHeight() / 2, paint);
                             break;
+                    }
+
+                    paint.setColor(Color.parseColor("#00008B"));
+                    paint.setTextSize(radiusMark*1.1f);
+                    paint.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.BOLD));
+                    //mark name
+                    if (mapView.getCurrentZoom() > 0.5 && marksName != null
+                            && marksName.size() == marks.size()) {
+                        canvas.drawText(marksName.get(i), goal[0] - radiusMark, goal[1] -
+                                radiusMark, paint);
                     }
 
                     if (i == num && isClickMark) {
