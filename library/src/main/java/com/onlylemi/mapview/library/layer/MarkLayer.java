@@ -173,10 +173,12 @@ public class MarkLayer extends MapBaseLayer {
                     paint.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.BOLD));
                     paint.setColor(Color.parseColor("#00008B"));
                     //mark name
-                    if (mapView.getCurrentZoom() > 0.5 && marksName != null
+                    if (mapView.getCurrentZoom() > 0.6 && marksName != null
                             && marksName.size() == marks.size()) {
-                        float halfTextLength = paint.measureText(marksName.get(i)) / 2;
-                        canvas.drawText(marksName.get(i), goal[0] - halfTextLength, goal[1] - radiusMark, paint);
+                        if(marksType.get(i) != 4) {
+                            float halfTextLength = paint.measureText(marksName.get(i)) / 2;
+                            canvas.drawText(marksName.get(i), goal[0] - halfTextLength, goal[1] - radiusMark, paint);
+                        }
                     }
 
                     if (i == num && isClickMark) {
