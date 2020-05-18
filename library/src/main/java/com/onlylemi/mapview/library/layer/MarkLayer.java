@@ -8,6 +8,9 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Typeface;
+import android.os.Build;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.view.MotionEvent;
 
 import com.onlylemi.mapview.library.MapView;
@@ -99,6 +102,7 @@ public class MarkLayer extends MapBaseLayer {
         }
     }
 
+    @android.support.annotation.RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void draw(Canvas canvas, Matrix currentMatrix, float currentZoom, float
             currentRotateDegrees) {
@@ -165,14 +169,14 @@ public class MarkLayer extends MapBaseLayer {
                             break;
                     }
 
-                    paint.setColor(Color.parseColor("#00008B"));
-                    paint.setTextSize(radiusMark*1.1f);
+                    paint.setTextSize(radiusMark);
                     paint.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.BOLD));
+                    paint.setColor(Color.parseColor("#00008B"));
                     //mark name
                     if (mapView.getCurrentZoom() > 0.5 && marksName != null
                             && marksName.size() == marks.size()) {
-                        canvas.drawText(marksName.get(i), goal[0] - radiusMark, goal[1] -
-                                radiusMark, paint);
+                        float halfTextLength = paint.measureText(marksName.get(i)) / 2;
+                        canvas.drawText(marksName.get(i), goal[0] - halfTextLength, goal[1] - radiusMark, paint);
                     }
 
                     if (i == num && isClickMark) {
